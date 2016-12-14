@@ -1,6 +1,0 @@
-{
-"number_of_cities": 10,
-"number_of_city_print_thresh" : 9,
-"city_placement_technique":"random_uniform",
-"save_map": 1
-}
