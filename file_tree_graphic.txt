@@ -1,0 +1,22 @@
+tsp/
+	config/
+		map_creation/
+			parameters.config
+		execute/
+			parameters.config
+	data/
+		hist/
+		maps/
+			MID<NNNN>/
+				MID<NNNN>.txt
+	src/
+		algs/
+			brute.py
+		map_creation/
+			random_uniform.py
+		functions/
+			complex.py
+			simple.py
+		execute.py
+		create_map.py
+	file_tree_graphic.txt
