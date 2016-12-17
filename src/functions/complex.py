@@ -87,7 +87,7 @@ def generate_ID(prefix, nDigits):
     assert type(prefix) == type('')
     assert type(nDigits) == type(0)
     numbersToAdd = np.random.random_integers(low=0,high=9,size=[nDigits])
-    ID = 'MID'
+    ID = prefix
     for i in range(0, nDigits):
         ID = ID + str(numbersToAdd[i])
     return ID
@@ -108,18 +108,33 @@ def save_solution(saveMethod, solution):
 
     filePathPrefix = get_filepath_to_solution_data(solution['map_ID'],
                                                    solution['sol_ID'])
-
     if saveMethod == 'txt':
-        pass
+        try:
+            with open(filePathPrefix+'.txt','wr') as f:
+                f.write(str(solution))
+            print ' INFO: solution saved as txt file'
+            print '\t- @ '+filePathPrefix+'.txt'
+        except:
+            print ' ERROR: unable to save solution as txt'
+
     elif saveMethod == 'json':
-        print " ERROR: cannot save as JSON b/c some arrays aren't serizible"
-        """
-        with open(filePathPrefix+'.json', 'w') as fp:
-            json.dump(solution, fp)
-        """
-        pass
-    elif saveMethod == 'npy':
-        pass
+        try:
+            with open(filePathPrefix+'.json', 'w') as fp:
+                json.dump(solution, fp)
+            print ' INFO: solution saved as json file'
+            print '\t- @ '+filePathPrefix+'.json'
+        except:
+            print ' ERROR: unable to save solution as json'
+
+    elif saveMethod == 'pickle':
+        try:
+            import pickle
+            pickle.dump( solution, open( filePathPrefix+".pickle", "wb" ) )
+            print ' INFO: solution saved as pickle file'
+            print '\t- @ '+filePathPrefix+'.pickle'
+        except:
+            print ' ERROR: unable to save solution as pickle'
+
     else:
         print ' INFO: unrecognized saveMethod ('+saveMethod+'), skipping...'
 

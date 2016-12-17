@@ -127,6 +127,7 @@ def main():
         for entry in saveMethods:
             cmplx.save_solution(str(entry), solution)
 
+    print 'Ending script...'
     print '\n'
 
 

@@ -138,5 +138,6 @@ def solve(configParams, cityMap, mapMeta):
     solution['distances'] = distances
     solution['end_time'] = end_time
     solution['shortest_path_index'] = shortest_path_index
+    solution['alg'] = 'brute'
 
     return solution
