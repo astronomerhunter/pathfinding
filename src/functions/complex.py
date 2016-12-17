@@ -122,3 +122,51 @@ def save_solution(saveMethod, solution):
         pass
     else:
         print ' INFO: unrecognized saveMethod ('+saveMethod+'), skipping...'
+
+
+def print_progress_bar(progressBar, currentIndex, maxIndex):
+    # This function attempts to print a % update every at intervals of
+    # len(progressBar)/ 100 %.
+    #
+    #    INPUTS:
+    #        - progressBar: if element = 0 it hasnt been printed yet. normalized
+    #                       to 100%, ex: if len() = 4 then print @ 25%,50%,75%,100%
+    #        - currentIndex: current index loop is at
+    #        - maxIndex: max index of loop, after index = max index loop should end
+    #    OUTPUTS:
+    #        - progressBar: return so it can be passed back into this function next
+    #                       loop
+    #
+    percentComplete = int(100.0 * currentIndex / maxIndex)
+    nIntervals = len(progressBar)
+    nIntervalsDone = (percentComplete-(percentComplete%nIntervals))/nIntervals
+    if progressBar[nIntervalsDone] == 0:
+        progressBar[nIntervalsDone] = 1
+        numberToPrint = nIntervals * nIntervalsDone
+        print '\t\t- % done:', numberToPrint
+    return progressBar
+
+
+
+def create_distance_matrix(cityMap, nCities):
+    # When searching each possible path for the shortest overall path, you'll need to
+    # repeatidly calculate the distance between any two cities.  Rather than doing
+    # this at run time, this function returns a matrix that shows the distance from
+    # any city to any other city.
+    #
+    distanceMatrix = np.zeros([nCities,nCities])
+    # TODO: make this loop more efficent; it doesnt need to loop through every elemnt
+    for i in range(0, np.shape(distanceMatrix)[0]):
+        for j in range(0, np.shape(distanceMatrix)[1]):
+            distanceMatrix[i,j] = get_2d_euclidean_dist(cityMap[i,0],
+                                                        cityMap[i,1],
+                                                        cityMap[j,0],
+                                                        cityMap[j,1])
+    return distanceMatrix
+
+
+
+def get_2d_euclidean_dist(Ax,Ay,Bx,By):
+    # This function returns the distance between cityA and cityB.
+    #
+    return np.sqrt((Ax - Bx)**2 + (Ay - By)**2)

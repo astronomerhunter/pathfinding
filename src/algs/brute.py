@@ -7,6 +7,7 @@ import numpy as np
 import itertools
 import time
 import sys
+from functions import complex as cmplx
 
 
 # -------------------------------------------------------------------------------------- #
@@ -21,19 +22,41 @@ def get_perms(N):
     return result
 
 
-def get_all_possible_routes(N, method):
+def get_all_possible_routes(N, originCity, method):
     # Returns all possible routes, using Python indicies (first = 0) to as references
     # for cities.
     # 
     #    INPUTS:
     #        - N: integer, number of cities to calculate possible route for
+    #        - originCity: index of the origin city
     #        - method: how to get all possible routes, ['iterator','manual']
     #    OUTPUTS:
-    #        - possibleRoutes: [N!,N] sized array where each row is a route path. 
+    #        - possibleRoutes: [(N-1)!/2,N] sized array where each row is a unique route path. 
     #
     if method == 'iterator':
-        possibleRoutes = list( itertools.permutations( range(0,N) ) )
-        return np.asarray(possibleRoutes)
+        # make a list of cities. be sure not to visit the origin city
+        listOfCities = range(0,N-1)
+        for index in range(0, len(listOfCities)):
+            if listOfCities[index] > originCity or listOfCities[index] == originCity:
+                listOfCities[index] = listOfCities[index] + 1
+            else:
+                pass
+        print 'listOfCities:',listOfCities
+        # the fancy method to get the possible routes
+        possibleRoutes = list( itertools.permutations(listOfCities) )
+        # possibleRoutes is symetrical, ex: path [1,2,3]==[3,2,1]. only first half is unique
+        possibleRoutes = possibleRoutes[:len(possibleRoutes)/2]
+        # arrays are cool
+        possibleRoutes = np.asarray(possibleRoutes)
+        # tac on origin city as first and last city in each path
+        originAdjPosRts = np.zeros([np.shape(possibleRoutes)[0],
+                                    np.shape(possibleRoutes)[1]+2])
+        originAdjPosRts[:,0] = originCity
+        originAdjPosRts[:,-1] = originCity
+        # fill the meat of the paths array with the old routes
+        originAdjPosRts[:,1:-1] = possibleRoutes
+        return originAdjPosRts
+
     elif method == 'manual':
         print " ERROR: get_all_possible_routes(method='manual') isn't build yet"
         sys.exit(100)
@@ -41,57 +64,6 @@ def get_all_possible_routes(N, method):
         print " ERROR: get_all_possible_routes() needs 'method' argument, see function comments"
         sys.exit(100)
 
-
-def create_distance_matrix(cityMap, nCities):
-    # When searching each possible path for the shortest overall path, you'll need to
-    # repeatidly calculate the distance between any two cities.  Rather than doing
-    # this at run time, this function returns a matrix that shows the distance from
-    # any city to any other city.
-    #
-    distanceMatrix = np.zeros([nCities,nCities])
-    # TODO: make this loop more efficent; it doesnt need to loop through every elemnt
-    for i in range(0, np.shape(distanceMatrix)[0]):
-        for j in range(0, np.shape(distanceMatrix)[1]):
-            distanceMatrix[i,j] = get_2d_euclidean_dist(cityMap[i,0],
-                                                        cityMap[i,1],
-                                                        cityMap[j,0],
-                                                        cityMap[j,1])
-    return distanceMatrix
-
-
-def get_2d_euclidean_dist(Ax,Ay,Bx,By):
-    # This function returns the distance between cityA and cityB.
-    #
-    return np.sqrt((Ax - Bx)**2 + (Ay - By)**2) 
-
-
-def create_progress_bar(N):
-    # Returns a list of 0's that is N long.
-    #
-    return [0]*N
-
-
-def print_progress_bar(progressBar, currentIndex, maxIndex):
-    # This function attempts to print a % update every at intervals of
-    # len(progressBar)/ 100 %. 
-    # 
-    #    INPUTS:
-    #        - progressBar: if element = 0 it hasnt been printed yet. normalized
-    #                       to 100%, ex: if len() = 4 then print @ 25%,50%,75%,100%
-    #        - currentIndex: current index loop is at
-    #        - maxIndex: max index of loop, after index = max index loop should end
-    #    OUTPUTS:
-    #        - progressBar: return so it can be passed back into this function next
-    #                       loop
-    #
-    percentComplete = int(100.0 * currentIndex / maxIndex)
-    nIntervals = len(progressBar)
-    nIntervalsDone = (percentComplete-(percentComplete%nIntervals))/nIntervals
-    if progressBar[nIntervalsDone] == 0:
-        progressBar[nIntervalsDone] = 1
-        numberToPrint = nIntervals * nIntervalsDone 
-        print '\t\t- % done:', numberToPrint
-    return progressBar
 
 
 # -------------------------------------------------------------------------------------- #
@@ -119,19 +91,27 @@ def solve(configParams, cityMap, mapMeta):
 
     solution = {}
 
+    # see if an origin city has been defined
+    if "origin_city" not in configParams or configParams['origin_city'] == '':
+        originCity = np.random.randint(0, nCities)
+        print '\t- origin city randomly selected'
+    else:
+        originCity = int(configParams['origin_city'])
+        print '\t- origin in config file as',originCity
+
     # list each possible path
     print '\t- getting all possible paths'
-    paths = get_all_possible_routes(nCities, 'iterator')
+    paths = get_all_possible_routes(nCities, originCity, 'iterator')
     print '\t\t- aquired '+str(len(paths))+' of them'
     
     # populate distance matrix
     print '\t- populating distance matrix'
-    distanceMatrix = create_distance_matrix(cityMap, nCities)
+    distanceMatrix = cmplx.create_distance_matrix(cityMap, nCities)
     print '\t\t- done'
 
     # calculate the total distance of each path
     print '\t- begining calculation of each path length'
-    progressBar = create_progress_bar(10)
+    progressBar = [0]*10
     distances = np.zeros(np.shape(paths)[0])
     for i in range(0, len(distances)):
         thisPath = paths[i,:]
@@ -141,7 +121,7 @@ def solve(configParams, cityMap, mapMeta):
             cityBindex = thisPath[j+1]
             thisDistance = thisDistance + distanceMatrix[cityAindex,cityBindex]
         distances[i] = thisDistance
-        progressBar = print_progress_bar(progressBar, i, len(distances))
+        progressBar = cmplx.print_progress_bar(progressBar, i, len(distances))
 
     # find shortest path
     shortest_path_index = np.where(distances == min(distances))[0]
