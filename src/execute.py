@@ -43,22 +43,32 @@ def load_map(map_ID):
     return cityMap, mapMeta
 
 
-def print_detail_solution(solution):
-    # Simply prints a more detailed view of the solution. CURRENTLY ONLY WORKS FOR ALG=brute
+def print_detail_solution(alg, solution):
+    # Simply prints a more detailed view of the solution.
     # 
-    print '\t\t index, path, distance:'
-    for i in range(0, len(solution['distances'])):
-        lineToPrint = '\t\t\t'+str(i)+', '+str(solution['paths'][i,:])+', '+str(solution['distances'][i])
-        if i in solution['shortest_path_index']:
-            lineToPrint = lineToPrint + ' *'
-        print lineToPrint
+    if alg == 'brute':
+        print '\t\t index, path, distance:'
+        for i in range(0, len(solution['distances'])):
+            lineToPrint = '\t\t\t'+str(i)+', '+str(solution['paths'][i,:])+', '+str(solution['distances'][i])
+            if i in solution['shortest_path_index']:
+                lineToPrint = lineToPrint + ' *'
+            print lineToPrint
+    elif alg == 'greedy':
+        print "\t\t- print_detail_solution(alg='greedy') isn't built yet"
+    else:
+        print "\t\t- Unrecognized alg argument in print_detail_solution()"
 
 
-def print_quick_solution(solution):
-    # Simply prints the fastest routes. CURRENTLY ONLY WORKS FOR ALG=brute.
+def print_quick_solution(alg, solution):
+    # Simply prints the fastest routes.
     #
-    for entry in solution['shortest_path_index']:
-        print '\t\t', solution['paths'][entry]
+    if alg == 'brute':
+        for entry in solution['shortest_path_index']:
+            print '\t\t', solution['paths'][entry]
+    elif alg =='greedy':
+        print "\t\t- print_quick_solution(alg='greedy') isn't built yet"
+    else:
+        print "\t\t- Unrecognized alg argument in print_quick_solution()"
 
 
 # -------------------------------------------------------------------------------------- #
@@ -102,10 +112,12 @@ def main():
     # print solution
     if solution is not None:
         print ' INFO: solve() complete.'
-        print '\t- detailed solution:'
-        print_detail_solution(solution)
-        #print '\t- quick solution:'
-        #print_quick_solution(solution)
+        if create_map_configParams['number_of_cities'] < 5:
+            print '\t- detailed solution:'
+            print_detail_solution(configParams['alg'],solution)
+        else:
+            print '\t- quick solution:'
+            print_quick_solution(configParams['alg'],solution)
     else:
         print ' INFO: solution is None. Something went wrong... did you check the alg file?'
     
