@@ -102,8 +102,8 @@ def main():
     # print solution
     if solution is not None:
         print ' INFO: solve() complete.'
-        #print '\t- detailed solution:'
-        #print_detail_solution(solution)
+        print '\t- detailed solution:'
+        print_detail_solution(solution)
         #print '\t- quick solution:'
         #print_quick_solution(solution)
     else:

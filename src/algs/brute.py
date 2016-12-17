@@ -21,19 +21,41 @@ def get_perms(N):
     return result
 
 
-def get_all_possible_routes(N, method):
+def get_all_possible_routes(N, originCity, method):
     # Returns all possible routes, using Python indicies (first = 0) to as references
     # for cities.
     # 
     #    INPUTS:
     #        - N: integer, number of cities to calculate possible route for
+    #        - originCity: index of the origin city
     #        - method: how to get all possible routes, ['iterator','manual']
     #    OUTPUTS:
-    #        - possibleRoutes: [N!,N] sized array where each row is a route path. 
+    #        - possibleRoutes: [(N-1)!/2,N] sized array where each row is a unique route path. 
     #
     if method == 'iterator':
-        possibleRoutes = list( itertools.permutations( range(0,N) ) )
-        return np.asarray(possibleRoutes)
+        # make a list of cities. be sure not to visit the origin city
+        listOfCities = range(0,N-1)
+        for index in range(0, len(listOfCities)):
+            if listOfCities[index] > originCity or listOfCities[index] == originCity:
+                listOfCities[index] = listOfCities[index] + 1
+            else:
+                pass
+        print 'listOfCities:',listOfCities
+        # the fancy method to get the possible routes
+        possibleRoutes = list( itertools.permutations(listOfCities) )
+        # possibleRoutes is symetrical, ex: path [1,2,3]==[3,2,1]. only first half is unique
+        possibleRoutes = possibleRoutes[:len(possibleRoutes)/2]
+        # arrays are cool
+        possibleRoutes = np.asarray(possibleRoutes)
+        # tac on origin city as first and last city in each path
+        originAdjPosRts = np.zeros([np.shape(possibleRoutes)[0],
+                                    np.shape(possibleRoutes)[1]+2])
+        originAdjPosRts[:,0] = originCity
+        originAdjPosRts[:,-1] = originCity
+        # fill the meat of the paths array with the old routes
+        originAdjPosRts[:,1:-1] = possibleRoutes
+        return originAdjPosRts
+
     elif method == 'manual':
         print " ERROR: get_all_possible_routes(method='manual') isn't build yet"
         sys.exit(100)
@@ -119,9 +141,17 @@ def solve(configParams, cityMap, mapMeta):
 
     solution = {}
 
+    # see if an origin city has been defined
+    if "origin_city" not in configParams or configParams['origin_city'] == '':
+        originCity = np.random.randint(0, nCities)
+        print '\t- origin city randomly selected'
+    else:
+        originCity = int(configParams['origin_city'])
+        print '\t- origin in config file as',originCity
+
     # list each possible path
     print '\t- getting all possible paths'
-    paths = get_all_possible_routes(nCities, 'iterator')
+    paths = get_all_possible_routes(nCities, originCity, 'iterator')
     print '\t\t- aquired '+str(len(paths))+' of them'
     
     # populate distance matrix

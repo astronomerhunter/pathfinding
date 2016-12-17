@@ -80,8 +80,13 @@ def solve(configParams, cityMap, mapMeta):
     # create list storing data about if a city has been visited yet
     guestLog = [False]*nCities
 
-    # select a random starting city
-    currentCity = np.random.randint(0,nCities)
+    # visit starting city
+    if "origin_city" not in configParams or configParams['origin_city'] == '':
+        currentCity = np.random.randint(0, nCities)
+        print '\t- origin city randomly selected'
+    else:
+        currentCity = int(configParams['origin_city'])
+        print '\t- origin in config file as',currentCity
     guestLog[currentCity] = True
     
     # define variables to track journey
