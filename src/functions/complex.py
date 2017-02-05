@@ -66,18 +66,23 @@ def get_filepath_to_solution_data(map_ID, sol_ID):
     #
     pathToFunctSimple_str = smpl.get_path_to_this_file()
     pathToFunctSimple_list =  smpl.filepath_string_to_list(pathToFunctSimple_str)
+    
     # remove 'src', 'functions', 'simple.py' to get to tsp/
     pathToTPS_list = pathToFunctSimple_list[:-3]
-    pathToSolID_list = pathToTPS_list + ['data','maps',map_ID,'solutions',sol_ID]
-    pathToSolID_str = smpl.filepath_list_to_string(pathToSolID_list)
+    
+    pathToSolFile_list = pathToTPS_list + ['data','maps',map_ID,'solutions',sol_ID,sol_ID]
+    pathToSolFile_str = smpl.filepath_list_to_string(pathToSolFile_list)
+    
     # make sure directories exist
-    pathToSolFolder = smpl.filepath_list_to_string(pathToSolID_list[:-2])
-    pathToSolIDFolder = smpl.filepath_list_to_string(pathToSolID_list[:-1])
+    pathToSolFolder = smpl.filepath_list_to_string(pathToSolFile_list[:-2])
+    pathToSolIDFolder = smpl.filepath_list_to_string(pathToSolFile_list[:-1])
+
     if os.path.exists(pathToSolFolder) == False:
         os.mkdir(pathToSolFolder)
     if os.path.exists(pathToSolIDFolder) == False:
         os.mkdir(pathToSolIDFolder)
-    return pathToSolID_str
+    
+    return pathToSolFile_str+'.json'
 
 
 def generate_ID(prefix, nDigits):
@@ -92,51 +97,6 @@ def generate_ID(prefix, nDigits):
         ID = ID + str(numbersToAdd[i])
     return ID
 
-
-def save_solution(saveMethod, solution):
-    # This function saves a solution by saving solution,a python dictionary,
-    # as ether raw text files, a JSON, or a numpy compressed pickled file.
-    #
-    try:
-        assert type(saveMethod) == type('')
-        assert type(solution) == type({})
-    except:
-        print ' ERROR: improper inputs into save_solution():'
-        print '\t- saveMethod should be string, is ', type(saveMethod)
-        print '\t- solution should be dictionary, is', type(solution)
-        return None
-
-    filePathPrefix = get_filepath_to_solution_data(solution['map_ID'],
-                                                   solution['sol_ID'])
-    if saveMethod == 'txt':
-        try:
-            with open(filePathPrefix+'.txt','wr') as f:
-                f.write(str(solution))
-            print ' INFO: solution saved as txt file'
-            print '\t- @ '+filePathPrefix+'.txt'
-        except:
-            print ' ERROR: unable to save solution as txt'
-
-    elif saveMethod == 'json':
-        try:
-            with open(filePathPrefix+'.json', 'w') as fp:
-                json.dump(solution, fp)
-            print ' INFO: solution saved as json file'
-            print '\t- @ '+filePathPrefix+'.json'
-        except:
-            print ' ERROR: unable to save solution as json'
-
-    elif saveMethod == 'pickle':
-        try:
-            import pickle
-            pickle.dump( solution, open( filePathPrefix+".pickle", "wb" ) )
-            print ' INFO: solution saved as pickle file'
-            print '\t- @ '+filePathPrefix+'.pickle'
-        except:
-            print ' ERROR: unable to save solution as pickle'
-
-    else:
-        print ' INFO: unrecognized saveMethod ('+saveMethod+'), skipping...'
 
 
 def print_progress_bar(progressBar, currentIndex, maxIndex):

@@ -91,7 +91,7 @@ def solve(configParams, cityMap, mapMeta):
     # save values in solution
     solution['start_time'] = start_time
     solution['end_time'] = end_time
-    solution['distanceMatrix'] = distanceMatrix
+    solution['distanceMatrix'] = distanceMatrix.tolist()
     solution['journeyDistance'] = journeyDistance
     solution['journeyPath'] = journeyPath
     solution['alg'] = 'greedy'

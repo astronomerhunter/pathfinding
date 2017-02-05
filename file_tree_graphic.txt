@@ -9,11 +9,17 @@ tsp/
 		maps/
 			MID<NNNN>/
 				MID<NNNN>.txt
+				MID<NNNN>_meta.txt
+				solutions/
+					SID<NNNN>/
+						SID<NNNN>.txt
+						SID<NNNN>_meta.txt
 	src/
 		algs/
 			brute.py
 		map_creation/
 			random_uniform.py
+			donut.py
 		functions/
 			complex.py
 			simple.py
