@@ -4,7 +4,7 @@
 # configuration file at /config/map_creation/parameters.config.  If the number of cities
 # is small enough, they are printed out by this function.
 #
-# Created by Hunter Brooks on 7/12/2016.  Please don't use my code without permission.
+# Created by Hunter Brooks on 7/12/2016.
 # -------------------------------------------------------------------------------------- #
 import numpy as np
 import json
@@ -88,7 +88,28 @@ def process_to_create_map(configParams):
 
 # -------------------------------------------------------------------------------------- #
 def main():
-    print '\n INFO: Begining script.'
+
+    # see if users is asking for help
+    helpOptions = ['-h','--h','-help','--help']
+    if any((True for x in helpOptions if x in sys.argv)):
+        print
+        print 'INFO:'
+        print '\tThis script is designed to create a 2d set of coordinates that represent city'
+        print '\tlocations through which a traveling salesman would travel if he was selling'
+        print '\tgoods. The coordinates are created by a map creation algorithm. Available'
+        print '\talgorithsm are located at tsp/src/map_creation/*.py .'
+        print 'USE:'
+        print '\tParameters serve as input to various map creation techniques. Parameters are'
+        print '\tpassed via the command line or can be set in a config file located at'
+        print '\ttsp/config/map_creation/parameters.congif . Use the command "python create_map.py"'
+        print '\tor "python create_map.py config" to generate a map using params in the config file.'
+        print '\tParameters can also be passed into the script via the command line by using'
+        print """\t"python create_map.py '{"number_of_cities":10,"city_placement_technique":"random_uniform"}'"""
+        print '\tNote the single quotes encasing the JSON formatted parameters!'
+        print
+        sys.exit(0)    
+    else:
+        print '\n INFO: Begining script.'
 
     # get the parameters by which to create a map with
     if len(sys.argv) == 1:
