@@ -29,4 +29,4 @@ def filepath_list_to_string(inList):
     #
     assert type(inList) == type([])
     # join list with '/'s, making sure to put a leading '/'
-    return '/'+os.path.join(*inList)
+    return str('/'+os.path.join(*inList))

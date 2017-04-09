@@ -1,1 +1,0 @@
-{"number_of_cities": 25, "map_ID": "MID49808"}

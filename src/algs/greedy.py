@@ -76,7 +76,7 @@ def solve(configParams, cityMap, mapMeta):
 
         # travel to nearest neighbor, let that city become current, do record keeping
         journeyDistance = journeyDistance + distanceMatrix[currentCity,nearestNeighbor]
-        currentCity = np.copy(nearestNeighbor)
+        currentCity = nearestNeighbor
         guestLog[currentCity] = True
         journeyPath.append(currentCity)
         
@@ -91,8 +91,9 @@ def solve(configParams, cityMap, mapMeta):
     # save values in solution
     solution['start_time'] = start_time
     solution['end_time'] = end_time
-    solution['distanceMatrix'] = distanceMatrix
+    solution['distanceMatrix'] = distanceMatrix.tolist()
     solution['journeyDistance'] = journeyDistance
     solution['journeyPath'] = journeyPath
+    solution['alg'] = 'greedy'
 
     return solution

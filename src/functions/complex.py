@@ -66,18 +66,23 @@ def get_filepath_to_solution_data(map_ID, sol_ID):
     #
     pathToFunctSimple_str = smpl.get_path_to_this_file()
     pathToFunctSimple_list =  smpl.filepath_string_to_list(pathToFunctSimple_str)
+    
     # remove 'src', 'functions', 'simple.py' to get to tsp/
     pathToTPS_list = pathToFunctSimple_list[:-3]
-    pathToSolID_list = pathToTPS_list + ['data','maps',map_ID,'solutions',sol_ID]
-    pathToSolID_str = smpl.filepath_list_to_string(pathToSolID_list)
+    
+    pathToSolFile_list = pathToTPS_list + ['data','maps',map_ID,'solutions',sol_ID,sol_ID]
+    pathToSolFile_str = smpl.filepath_list_to_string(pathToSolFile_list)
+    
     # make sure directories exist
-    pathToSolFolder = smpl.filepath_list_to_string(pathToSolID_list[:-2])
-    pathToSolIDFolder = smpl.filepath_list_to_string(pathToSolID_list[:-1])
+    pathToSolFolder = smpl.filepath_list_to_string(pathToSolFile_list[:-2])
+    pathToSolIDFolder = smpl.filepath_list_to_string(pathToSolFile_list[:-1])
+
     if os.path.exists(pathToSolFolder) == False:
         os.mkdir(pathToSolFolder)
     if os.path.exists(pathToSolIDFolder) == False:
         os.mkdir(pathToSolIDFolder)
-    return pathToSolID_str
+    
+    return pathToSolFile_str+'.json'
 
 
 def generate_ID(prefix, nDigits):
@@ -87,41 +92,11 @@ def generate_ID(prefix, nDigits):
     assert type(prefix) == type('')
     assert type(nDigits) == type(0)
     numbersToAdd = np.random.random_integers(low=0,high=9,size=[nDigits])
-    ID = 'MID'
+    ID = prefix
     for i in range(0, nDigits):
         ID = ID + str(numbersToAdd[i])
     return ID
 
-
-def save_solution(saveMethod, solution):
-    # This function saves a solution by saving solution,a python dictionary,
-    # as ether raw text files, a JSON, or a numpy compressed pickled file.
-    #
-    try:
-        assert type(saveMethod) == type('')
-        assert type(solution) == type({})
-    except:
-        print ' ERROR: improper inputs into save_solution():'
-        print '\t- saveMethod should be string, is ', type(saveMethod)
-        print '\t- solution should be dictionary, is', type(solution)
-        return None
-
-    filePathPrefix = get_filepath_to_solution_data(solution['map_ID'],
-                                                   solution['sol_ID'])
-
-    if saveMethod == 'txt':
-        pass
-    elif saveMethod == 'json':
-        print " ERROR: cannot save as JSON b/c some arrays aren't serizible"
-        """
-        with open(filePathPrefix+'.json', 'w') as fp:
-            json.dump(solution, fp)
-        """
-        pass
-    elif saveMethod == 'npy':
-        pass
-    else:
-        print ' INFO: unrecognized saveMethod ('+saveMethod+'), skipping...'
 
 
 def print_progress_bar(progressBar, currentIndex, maxIndex):
