@@ -7,29 +7,7 @@ from functions import complex as cmplx
 
 
 
-def main():
-    print '\nINFO: Script begining'
-
-    # get the parameters by which to create a visualization with
-    if len(sys.argv) == 1:
-        # command looks like "python visualize.py"
-        print ' ERROR: This script needs inputs passed as JSON encased in single quotes'
-        print '''      $ python visualize.py '{"map_ID":"MID12345"}' '''
-        print '\n'
-        sys.exit(1)
-    else:
-        # try to intrepret command line argument as a JSON
-        print ' INFO: Attempting to get parameters from command line input'
-        try:
-            import json
-            parameters = json.loads(sys.argv[1])
-        except Exception as e:
-            print ' ERROR: Unable to intrepret command line argument as JSON. Try...'
-            print '''     $ python visualize.py '{"map_ID":"MID12345"}' '''
-            print ' Exact Python error:', e
-            print '\n'
-            sys.exit(1)
-
+def main(parameters):
 
     # print parameters
     print ' INFO: Parameters:'
@@ -42,7 +20,7 @@ def main():
     try:
        	city_locations = np.loadtxt(pathToMap)
         print ' INFO: found a cityMap @',pathToMap
-    except:
+    except Exception as e:
         print '\n ERROR loading City Locations file'
         print '\t- looked @', pathToMap
         print '\t- exact Python error:', e
@@ -183,5 +161,35 @@ def main():
             sys.exit(1)
 
 
+
 if __name__ == '__main__':
-    main()
+    helpOptions = ['-h','--h','-help','--help']
+    if any((True for x in helpOptions if x in sys.argv)):
+        # TODO: lets rewrite this guy
+        print
+        print 'INFO:'
+        print '\tthis needs to be written!'
+        print
+        sys.exit(0)
+    else:
+        print '\n INFO: Begining script.'
+        # get the parameters by which to create a visualization with
+        if len(sys.argv) == 1:
+            # command looks like "python visualize.py"
+            print ' ERROR: This script needs inputs passed as JSON encased in single quotes'
+            print '''      $ python visualize.py '{"map_ID":"MID12345"}' '''
+            print '\n'
+            sys.exit(1)
+        else:
+            # try to intrepret command line argument as a JSON
+            print ' INFO: Attempting to get parameters from command line input'
+            try:
+                import json
+                parameters = json.loads(sys.argv[1])
+            except Exception as e:
+                print ' ERROR: Unable to intrepret command line argument as JSON. Try...'
+                print '''     $ python visualize.py '{"map_ID":"MID12345"}' '''
+                print ' Exact Python error:', e
+                print '\n'
+                sys.exit(1)
+    main(parameters)
