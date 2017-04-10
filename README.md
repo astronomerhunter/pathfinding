@@ -1,14 +1,10 @@
 # tsp
-Quantitative tool kit for estimating solutions of the Traveling Salesmen Problem.
+**Short Description:** Quantitative, Python tool kit for calculating solutions of optimal pathfinding among N many nodes.  See below for tool kit capabilities:
+  - Each node has a location, given by an X and Y coordinate pair
+  - Node locations are created via few common algorithms OR by custom, user created algorithms
+  - Distance optimized solutions are estimated via premage algorithms OR by custom, user created algorithms
+  - Functionality to create .gif (or flat images) of solution in progress
 
 
-The goal of this project is to create an infrastructure for estimating solutions of the traveling salesmen problem.  The infrastructure should:
-  - allow for a user to easily create an randomly generated city map:
-    - using premade algorithums
-    - by creating their own map creation algorithm
-  - allow for a user to easily apply a tsp solution estimation algorithum to a city map:
-    - using premade algorithms
-    - by creating their own solution algorithm
-  - visualize solutions to previously executed solution algorithms
-  - easily apply various solution algorithms to maps created from various map creation algorithms
+**Longer Description:** The goal of this project is to create an infrastructure for estimating solutions of the pathfinding problems, like the famous Traveling Salesmen Problem (the same TSP this repository is named after).  Mostly an execercise in best Python coding practices, the infrastructure should:
   - be coded easily enough that a college graduate outside of Computer Science but with a quantative background can understand and contribute.
