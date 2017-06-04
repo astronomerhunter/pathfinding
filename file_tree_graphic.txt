@@ -1,9 +1,14 @@
-tsp/
+pathfinding/
 	config/
 		map_creation/
 			parameters.config
 		execute/
 			parameters.config
+		templates/
+			map_creation/
+				< sample json goes here >
+			execute/
+				< sample json goes here >
 	data/
 		hist/
 		maps/
