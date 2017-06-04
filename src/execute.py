@@ -1,4 +1,6 @@
-
+"""
+USAGE: Type python create_map.py -h for useage information.
+"""
 # -------------------------------------------------------------------------------------- #
 # This script performs a TSP solution on a map.  If you provide it with the map_ID of an
 # existing map, it will attempt to find the shortest path of that map.  If not, it will
@@ -111,13 +113,16 @@ def save_solution(saveMethod, solution):
 
     if saveMethod == 'json':
         try:
+            for key in solution.keys():
+                if type(solution[key]) == type(np.zeros([10,10])):
+                    solution[key] = solution[key].tolist()
             with open(filePathPrefix, 'w') as outfile:
                 json.dump(solution,outfile)
             print ' INFO: solution saved as json file'
             print '\t- @ '+filePathPrefix
         except Exception as e:
             print '\n ERROR: unable to save solution as json'
-            print '\t- @ '+filePathPrefix+'.json'
+            print '\t- @ '+filePathPrefix
             print '\t- exact Python error:',str(e)
             print '\n'
             return None
@@ -189,7 +194,7 @@ def main(configParams):
 # -------------------------------------------------------------------------------------- #	
 if __name__ == "__main__":
     helpOptions = ['-h','--h','-help','--help']
-    if any((True for x in helpOptions if x in sys.argv)):
+    if any((True for x in helpOptions if x in sys.argv)) or len(sys.argv) == 1:
         # TODO: lets rewrite this guy
         print
         print 'INFO:'
@@ -200,7 +205,7 @@ if __name__ == "__main__":
         print '\tParameters serve as input to various solver techniques. Parameters are'
         print '\tpassed via the command line or can be set in a config file located at'
         print '\ttsp/config/execute/parameters.congif . Use the command "python execute.py"'
-        print '\tor "python execute.py config" to solve a map using the params in the config file'
+        print '\tor "python execute.py --config" to solve a map using the params in the config file'
         print '\tParameters can also be passed into the script via the command line by using'
         print """\t"python execute.py '{"alg":"brute"}'"""
         print '\tNote the single quotes encasing the JSON formatted parameters!'
@@ -213,27 +218,23 @@ if __name__ == "__main__":
         print '\t"alg": "greedy"'
         print
         print 'SAMPLE COMMAND:'
-        print """\tpython create_map.py '{"number_of_cities":10,"city_placement_technique":"random_uniform"}'"""
+        print """\tNOT WRITTEN YET """
         print
         sys.exit(0)
     else:
         print '\n INFO: Begining script.'
-        if len(sys.argv) == 1:
-            # command looks like: $ python execute.py
+        if sys.argv[1] == '--config':
+            # command looks like: $ python execute.py config
             configParams = cmplx.get_config_params('execute')
         else:
-            if sys.argv[1] == 'config':
-                # command looks like: $ python execute.py config
-                configParams = cmplx.get_config_params('execute')
-            else:
-                # command looks like: $ python execute.py '{"alg":"brute"}'
-                try:
-                    configParams = json.loads(sys.argv[1])
-                    print ' INFO: Got configParams from command line arguments'
-                except Exception as e:
-                    print '\n ERROR: Unable to load configuration parameters as JSON. Try...'
-                    print '''     $ python execute.py '{"alg":"brute"}' '''
-                    print ' Exact Python error: '+str(e)
-                    print '\n'
-                    sys.exit(1)
+            # command looks like: $ python execute.py '{"alg":"brute"}'
+            try:
+                configParams = json.loads(sys.argv[1])
+                print ' INFO: Got configParams from command line arguments'
+            except Exception as e:
+                print '\n ERROR: Unable to load configuration parameters as JSON. Try...'
+                print '''     $ python execute.py '{"alg":"brute"}' '''
+                print ' Exact Python error: '+str(e)
+                print '\n'
+                sys.exit(1)
         main(configParams)

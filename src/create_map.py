@@ -1,8 +1,13 @@
+"""
+USAGE: Type python create_map.py -h for useage information.
+"""
 # -*- coding: utf-8 -*-
 # -------------------------------------------------------------------------------------- #
 # This function creates a map of cities.  The properties of that map draw from a
 # configuration file at /config/map_creation/parameters.config.  If the number of cities
 # is small enough, they are printed out by this function.
+#
+# Please use with Python 2.7
 #
 # Created by Hunter Brooks on 7/12/2016.
 # -------------------------------------------------------------------------------------- #
@@ -108,6 +113,8 @@ def main(configParams):
     else:
         print ' INFO: Not printing results because "number_of_city_print_thresh" not found in configParams'
 
+    print ' OUTPUT:'
+    print '\t- map_ID:',mapMeta["map_ID"]
 
     print ' INFO: Ending script.\n'
     return cityMap, mapMeta
@@ -118,9 +125,11 @@ def main(configParams):
 if __name__ == "__main__":
     
     # see if users is asking for help
+    nSeperatorStars = 55
     helpOptions = ['-h','--h','-help','--help']
-    if any((True for x in helpOptions if x in sys.argv)):
+    if any((True for x in helpOptions if x in sys.argv)) or len(sys.argv) == 1:
         print
+        print '*'*nSeperatorStars
         print 'INFO:'
         print '\tThis script is designed to create a 2d set of coordinates that represent city'
         print '\tlocations through which a traveling salesman would travel if he was selling'
@@ -131,7 +140,7 @@ if __name__ == "__main__":
         print '\tParameters serve as input to various map creation techniques. Parameters are'
         print '\tpassed via the command line or can be set in a config file located at'
         print '\ttsp/config/map_creation/parameters.congif . Use the command "python create_map.py"'
-        print '\tor "python create_map.py config" to generate a map using params in the config file.'
+        print '\tor "python create_map.py --config" to generate a map using params in the config file.'
         print '\tParameters can also be passed into the script via the command line by using'
         print "\tpython create_map.py '{<JSON formatted key/values go here>}'. Note the single quotes"
         print '\tencasing the JSON formatted parameters!'
@@ -140,6 +149,7 @@ if __name__ == "__main__":
         print '\tFormat is "key": example_value (data type) [condition]. Indention shows condition too.'
         print '\t"number_of_cities": 10 (integer)'
         print '\t"save_map": 1 (integer, 0 or 1)'
+
         print '\t"city_placement_technique": "random_uniform"'
 
         print '\t"city_placement_technique": "fixed_number_of_groups"'
@@ -147,37 +157,38 @@ if __name__ == "__main__":
         print '\t  "std_dev_of_offset": 0.05 (decimal)'
 
         print '\t"city_placement_technique": "donut"'
+
+        print '\t"city_placement_technique": "ball"'
         
         print 'SAMPLE COMMAND:'
         print """\tpython create_map.py '{"number_of_cities":10,"city_placement_technique":"random_uniform"}'"""
+        print '*'*nSeperatorStars
         print
-        sys.exit(0)
+        sys.exit(1)
 
     else:
         print '\n INFO: Begining script.'
         
         # get the parameters by which to create a map with
-        if len(sys.argv) == 1:
-            # command looks like "python create_map.py" , so we need to get config params
+        if sys.argv[1] == '--config':
+            # command looks like "python create_map.py config" and again get from file
             configParams = cmplx.get_config_params('map_creation')
-        else:
-            if sys.argv[1] == 'config':
-                # command looks like "python create_map.py config" and again get from file
-                configParams = cmplx.get_config_params('map_creation')
-            elif len(sys.argv) == 2:
-                # command looks like "python create_map.py '{"number_of_cities":10}'
-                print ' INFO: Attempting to get configParams from system inputs'
-                try:
-                    configParams = json.loads(sys.argv[1])
-                except Exception as e:
-                    print ' ERROR: Unable to load configuration parameters as JSON. Try...'
-                    print '''     $ python create_map.py '{"number_of_cities":10,"city_placement_technique":"random_uniform"}' '''
-                    print ' Exact Python error: '+str(e)
-                    sys.exit(1)
-            else:
-                print ' ERROR: Too many system arguments. Be sure to wrap JSON in single quotes'
-                print """\t$ python create_map.py '{"alg":"brute"}'"""
+            
+        elif len(sys.argv) == 2:
+            # command looks like "python create_map.py '{"number_of_cities":10}'
+            print ' INFO: Attempting to get configParams from system inputs'
+            try:
+                configParams = json.loads(sys.argv[1])
+            except Exception as e:
+                print ' ERROR: Unable to load configuration parameters as JSON. Try...'
+                print '''     $ python create_map.py '{"number_of_cities":10,"city_placement_technique":"random_uniform"}' '''
+                print ' Exact Python error: '+str(e)
                 sys.exit(1)
+                
+        else:
+            print ' ERROR: Too many system arguments. Be sure to wrap JSON in single quotes'
+            print """\t$ python create_map.py '{"alg":"brute"}'"""
+            sys.exit(1)
 
         # if script is still running we must have gotten config params, so start up the process!
         main(configParams)
