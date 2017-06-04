@@ -41,7 +41,6 @@ def get_all_possible_routes(N, originCity, method):
                 listOfCities[index] = listOfCities[index] + 1
             else:
                 pass
-        print 'listOfCities:',listOfCities
         # the fancy method to get the possible routes
         possibleRoutes = list( itertools.permutations(listOfCities) )
         # possibleRoutes is symetrical, ex: path [1,2,3]==[3,2,1]. only first half is unique
@@ -117,8 +116,8 @@ def solve(configParams, cityMap, mapMeta):
         thisPath = paths[i,:]
         thisDistance = 0
         for j in range(0, len(thisPath)-1):
-            cityAindex = thisPath[j]
-            cityBindex = thisPath[j+1]
+            cityAindex = int(thisPath[j])
+            cityBindex = int(thisPath[j+1])
             thisDistance = thisDistance + distanceMatrix[cityAindex,cityBindex]
         distances[i] = thisDistance
         progressBar = cmplx.print_progress_bar(progressBar, i, len(distances))

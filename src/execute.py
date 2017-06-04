@@ -113,13 +113,16 @@ def save_solution(saveMethod, solution):
 
     if saveMethod == 'json':
         try:
+            for key in solution.keys():
+                if type(solution[key]) == type(np.zeros([10,10])):
+                    solution[key] = solution[key].tolist()
             with open(filePathPrefix, 'w') as outfile:
                 json.dump(solution,outfile)
             print ' INFO: solution saved as json file'
             print '\t- @ '+filePathPrefix
         except Exception as e:
             print '\n ERROR: unable to save solution as json'
-            print '\t- @ '+filePathPrefix+'.json'
+            print '\t- @ '+filePathPrefix
             print '\t- exact Python error:',str(e)
             print '\n'
             return None

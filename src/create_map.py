@@ -114,7 +114,7 @@ def main(configParams):
         print ' INFO: Not printing results because "number_of_city_print_thresh" not found in configParams'
 
     print ' OUTPUT:'
-    print '\tmap_ID:',mapMeta["map_ID"]
+    print '\t- map_ID:',mapMeta["map_ID"]
 
     print ' INFO: Ending script.\n'
     return cityMap, mapMeta
@@ -149,6 +149,7 @@ if __name__ == "__main__":
         print '\tFormat is "key": example_value (data type) [condition]. Indention shows condition too.'
         print '\t"number_of_cities": 10 (integer)'
         print '\t"save_map": 1 (integer, 0 or 1)'
+
         print '\t"city_placement_technique": "random_uniform"'
 
         print '\t"city_placement_technique": "fixed_number_of_groups"'
@@ -156,6 +157,8 @@ if __name__ == "__main__":
         print '\t  "std_dev_of_offset": 0.05 (decimal)'
 
         print '\t"city_placement_technique": "donut"'
+
+        print '\t"city_placement_technique": "ball"'
         
         print 'SAMPLE COMMAND:'
         print """\tpython create_map.py '{"number_of_cities":10,"city_placement_technique":"random_uniform"}'"""
