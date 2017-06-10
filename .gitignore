@@ -1,8 +1,14 @@
-# the below extensions have been added by Hunter
-.DS_Store
-~
-.pyc
-.txt
+# Mac OSX Finder files
+*.DS_Store
+
+# Compiled Python
+*.pyc
+
+# EMACS temperary files
+*.py~
+
+# Data
+*.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
