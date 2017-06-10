@@ -15,7 +15,7 @@ Soon, I'll add the exact distribution functions to this document.
 The algorithms that navigate through the node sets are located at src/algs/.  Currently there is:
   - brute : Calculates each possible path through the nodeset and returns the shortest.  Computation time goes as (N-1)! where N is the number of nodes.  Not practical when N > 10.
   - greedy : From the starting node, always travels to the next closest node.
-
+  - random_neighbor : Choose a random path through the city list. Do not return home to origin city after visiting every city.
 
 # Want To Contribute?
 The goal of this project is to create an infrastructure for estimating solutions of the traveling salesmen problem.  The infrastructure should:
