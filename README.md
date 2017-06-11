@@ -1,6 +1,5 @@
 ## Optimal Path-Finding Tool Kit
 This repository holds Python 2.7 code to find the optimal routes through a set of notes.  A common analogy is the Traveling Salesmen Problem, where a salesman is going door to door and must visit all the nodes (houses). Included are several ways to create a set of nodes, which can be though of locations on a map.  There are also a few ways to navigate through those sets of nodes.  It is very easy to integrate your own route-finding algorithm.  Additionally, you can create .gif's of the results, like below:
-
 <p align="center">
   <img width="800" height="600" src="https://github.com/astronomerhunter/pathfinding/blob/master/data/sample_maps_and_solutions/MID34287/solutions/SID02096/movie/animated_solution.gif?raw=true">
 </p>
