@@ -19,7 +19,7 @@ The algorithms that navigate through the node sets are located at src/algs/.  Cu
   - random_neighbor : Choose a random path through the city list. Do not return home to origin city after visiting every city.
 
 # Want To Contribute?
-The goal of this project is to create an infrastructure for estimating solutions of the traveling salesmen problem.  The infrastructure should:
+The goal of this project is to create an infrastructure for estimating solutions of the traveling salesmen problem.  Please follow the file system structure outlined in file_tree_graphic.txt. The infrastructure should:
   - allow for a user to easily create an randomly generated city map:
     - using premade algorithums
     - by creating their own map creation algorithm

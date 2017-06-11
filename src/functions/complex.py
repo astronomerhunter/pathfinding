@@ -38,8 +38,17 @@ def get_config_params(whichConfig):
         print '\t\t- '+str(dict_keys[i])+' : '+str(configParams[dict_keys[i]])
     # return JSON with configuration parameters
     return configParams
-    
-    
+
+
+def get_filepath_to_repo():    
+    # Retuns the path to the pathfinding/ folder.  This function is included so that a user
+    # of this code doesn't have to set a bash variable with the path to the repo.
+    #
+    pathToFunctSimple_str = smpl.get_path_to_this_file()
+    pathToFunctSimple_list =  smpl.filepath_string_to_list(pathToFunctSimple_str)
+    pathToRepo_list = pathToFunctSimple_list[:-3] 
+    return smpl.filepath_list_to_string(pathToRepo_list)
+
 def get_filepath_to_map_data(map_ID):
     # This functions returns the filepath to a map and its meta data given
     # a map_ID.
@@ -52,11 +61,6 @@ def get_filepath_to_map_data(map_ID):
     pathToMapID_str = smpl.filepath_list_to_string(pathToMapID_list)
     pathToMap = pathToMapID_str+'.txt'
     pathToMeta = pathToMapID_str+'_meta.txt'
-    # make sure directories exist
-    pathToMapIDFolder = smpl.filepath_list_to_string(pathToMapID_list[:-1])
-    if os.path.exists(pathToMapIDFolder) == False:
-        os.mkdir(pathToMapIDFolder)
-
     return pathToMap, pathToMeta
 
 
@@ -145,3 +149,5 @@ def get_2d_euclidean_dist(Ax,Ay,Bx,By):
     # This function returns the distance between cityA and cityB.
     #
     return np.sqrt((Ax - Bx)**2 + (Ay - By)**2)
+
+

@@ -104,8 +104,7 @@ def save_solution(saveMethod, solution):
         assert type(solution) == type({})
     except:
         print '\n ERROR: improper inputs into save_solution():'
-        print '\t- saveMethod should be string, is ', type(saveMethod)
-        print '\t- solution should be dictionary, is', type(solution)
+        print '\t- saveMethod should be string and one of ', saveMethodTypes
         print '\n'
         return None
 
