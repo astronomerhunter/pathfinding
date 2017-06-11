@@ -15,7 +15,7 @@ import numpy as np
 import json
 from functions import complex as cmplx
 import sys
-
+import os
 
 
 # -------------------------------------------------------------------------------------- #
@@ -38,6 +38,15 @@ def save_map(cityMap, mapMeta):
     map_ID = mapMeta['map_ID']
     mapSavePath, metaSavePath = cmplx.get_filepath_to_map_data(map_ID)
     print '\t- saving cityMap as text file @ '+mapSavePath
+
+    pathToTestExistance = cmplx.get_filepath_to_repo()
+    foldersToMake = ['data','maps',map_ID]
+    for index in range(0, len(foldersToMake)):
+        folderToAdd = foldersToMake[index]
+        if os.path.exists(pathToTestExistance+os.path.sep+folderToAdd) == False:
+            os.mkdir(pathToTestExistance+os.path.sep+folderToAdd)
+        pathToTestExistance = pathToTestExistance + os.path.sep + folderToAdd
+
     try:
         np.savetxt(mapSavePath, cityMap)
     except Exception as e:
