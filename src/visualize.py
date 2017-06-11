@@ -4,7 +4,7 @@ import os
 import matplotlib.pylab as plt
 import sys
 from functions import complex as cmplx
-
+from functions import simple as smpl
 
 
 def main(parameters):
@@ -56,15 +56,19 @@ def main(parameters):
 
     # plot home city with a star if one is defined
 
-
+    # sav an image of the map
+    pathToMapFile, pathToMetaFile = cmplx.get_filepath_to_map_data(parameters['map_ID'])
+    pathToMapFolder_list = pathToMapFile.split(os.path.sep)[:-1]
+    pathToMapFolder_list.append(parameters['map_ID']+'_static.png')
+    # TODO: use filepath_list_to_string() in simple.py instead of the following line
+    pathToStatic = str('/'+os.path.join(*pathToMapFolder_list))
+    plt.savefig(pathToStatic)
+    print ' INFO: saved a static image of the map @',pathToStatic
 
     # if pathToSol isn't defined then we're just showing the map
     if 'sol_ID' not in parameters.keys():
-        plt.show()
         print 'INFO: Script ending\n'
         sys.exit(0)
-
-
     # if it is, then we need to draw the solution before we show the result
     else:
         pathToSol = cmplx.get_filepath_to_solution_data(parameters['map_ID'], parameters['sol_ID'])
