@@ -4,11 +4,11 @@ This repository holds Python 2.7 code to find the optimal routes through a set o
   <img width="800" height="600" src="https://github.com/astronomerhunter/pathfinding/blob/master/data/sample_maps_and_solutions/MID34287/solutions/SID02096/movie/animated_solution.gif?raw=true">
 </p>
 
-Nodes can be generated using build in algorithms (see src/map_creation) or you can use external data sets.  After the solution is calculated, it is possible to make an animated .gif of the result.  Each node should be described by two values (think: latitude and longitude).  This software was orgionally designed to estimate solutions of the Traveling Salesman Problem so the code itself uses words like "cities" to desribe the sets of nodes. It is designed in such a way that non-Python experts should be able to integrate their own aglorthims into the code base.  
+Nodes can be generated using build in algorithms (see src/map_creation) or you can use external data sets.  After the solution is calculated, it is possible to make an animated .gif of the result.  Each node of a set containing n nodes is identified by N<sup>n</sup> should be described by two values p<sup>1</sup> and p<sup>2</sup> (think: latitude and longitude).  This software was orgionally designed to estimate solutions of the Traveling Salesman Problem so the code itself uses words like "cities" to desribe the sets of nodes. It is designed in such a way that non-Python experts should be able to integrate their own aglorthims into the code base.  
 
 
 ### Sets of Nodes
-Sets of nodes, (or "maps", or sets of "cities") can be created using this code.  The algorthiums to create such sets exist in /src/map_creation/ and currently available built-in options include:
+Sets of nodes can be created using this code.  In the Traveling Salesman Problem, the nodes are the locations the salesman must visit.  The algorthiums to create such sets exist in /src/map_creation/ and currently available built-in options include:
   - random_uniform : Randomly distribute cities on a map.
   - donut : Center a normal distribution some distance away from the middle of the map and at random degrees of rotation.  With enough cities, this map becomes donut shaped.
   - ball : Center a normal distribution on the middle of the map.  The distribution of cities decreases with radius from the middle of the map.
