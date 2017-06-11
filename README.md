@@ -1,5 +1,7 @@
+![](https://github.com/astronomerhunter/pathfinding/blob/master/data/sample_maps_and_solutions/MID34287/solutions/SID02096/movie/animated_solution.gif?raw=true)
+
 ## Optimal Path-Finding Tool Kit
-This software package uses Python 2.7 to find the most desireable path through a set of nodes.  Those nodes can be generated using build in algorithms or you can use external data sets.  After the solution is calculated, it is possible to make an animated .gif of the result.  Each node should be described by two values (think: latitude and longitude).  This software was orgionally designed to estimate solutions of the Traveling Salesman Problem so the code itself uses words like "cities" to desribe the sets of nodes. It is designed in such a way that non-Python experts should be able to integrate their own aglorthims into the code base.  
+This software package uses Python 2.7 to find the most desireable path through a set of nodes.  Nodes can be generated using build in algorithms or you can use external data sets.  After the solution is calculated, it is possible to make an animated .gif of the result.  Each node should be described by two values (think: latitude and longitude).  This software was orgionally designed to estimate solutions of the Traveling Salesman Problem so the code itself uses words like "cities" to desribe the sets of nodes. It is designed in such a way that non-Python experts should be able to integrate their own aglorthims into the code base.  
 
 
 ### Sets of Nodes
