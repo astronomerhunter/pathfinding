@@ -1,4 +1,4 @@
-# handle imports
+# -------------------------------------------------------------------------------------- #
 import numpy as np
 import os
 import matplotlib.pylab as plt
@@ -6,36 +6,16 @@ import sys
 from functions import complex as cmplx
 from functions import simple as smpl
 
-
-def main(parameters):
-
-    # print parameters
-    print ' INFO: Parameters:'
-    for key in parameters.keys():
-        print '\t- '+key+' : '+parameters[key]
-
-
-    # get path to the data
-    pathToMap, pathToMeta = cmplx.get_filepath_to_map_data(parameters['map_ID'])
-    try:
-       	city_locations = np.loadtxt(pathToMap)
-        print ' INFO: found a cityMap @',pathToMap
-    except Exception as e:
-        print '\n ERROR loading City Locations file'
-        print '\t- looked @', pathToMap
-        print '\t- exact Python error:', e
-        print '\n'
-        sys.exit(1)
-
-
-    # plot image
-    x = city_locations[:,0]
-    y = city_locations[:,1]
-    nCities = len(x)
-    print ' INFO: number of cities to plot:',nCities
+# -------------------------------------------------------------------------------------- #
+def generate_static_PNG_of_map(node_locations, map_ID):
+    #
+    #
+    x = node_locations[:,0]
+    y = node_locations[:,1]
+    nNodes = np.shape(node_locations)[0]
+    print ' INFO: number of nodes to plot:', nNodes
     plt.scatter(x,y)
-    
-    # limits of plot are min/max +/- 10%
+
     xLowerLimit = min(x) - 0.10*(np.abs(max(x)-min(x)))
     xUpperLimit = max(x) + 0.10*(np.abs(max(x)-min(x)))
     yLowerLimit = min(y) - 0.10*(np.abs(max(y)-min(y)))
@@ -45,34 +25,143 @@ def main(parameters):
     print '\t - xUpperLimit:',xUpperLimit
     print '\t - yLowerLimit:',yLowerLimit
     print '\t - yUpperLimit:',yUpperLimit
-    
     plt.xlim([xLowerLimit,xUpperLimit])
     plt.ylim([yLowerLimit,yUpperLimit])
 
-    # write some labels
-    plt.xlabel('x axis location')
-    plt.ylabel('y axis location')
-    plt.title('Location of Citys')
+    plt.xlabel('p_1 value')
+    plt.ylabel('p_2 value')
+    plt.title('p_1 and p_2 of all Nodes')
 
-    # plot home city with a star if one is defined
-
-    # sav an image of the map
-    pathToMapFile, pathToMetaFile = cmplx.get_filepath_to_map_data(parameters['map_ID'])
+    pathToMapFile, pathToMetaFile = cmplx.get_filepath_to_map_data(map_ID)
     pathToMapFolder_list = pathToMapFile.split(os.path.sep)[:-1]
-    pathToMapFolder_list.append(parameters['map_ID']+'_static.png')
+    pathToMapFolder_list.append(map_ID+'_static.png')
     # TODO: use filepath_list_to_string() in simple.py instead of the following line
     pathToStatic = str('/'+os.path.join(*pathToMapFolder_list))
     plt.savefig(pathToStatic)
-    print ' INFO: saved a static image of the map @',pathToStatic
 
-    # if pathToSol isn't defined then we're just showing the map
+def make_gif_of_greedy(pathToSol, solution):
+    #
+    #
+    pathToSol = pathToSol.split('/')[:-1] + ['movie']
+    pathToMovie = smpl.filepath_list_to_string(pathToSol) + '/'
+    if os.path.exists(pathToMovie) == False:
+        os.mkdir(pathToMovie)
+        print ' INFO: created directory to hold all the movie still images'
+    else:
+        print ' INFO: no need to create movie directory, one already exists'
+        print '\t- path:',pathToMovie
+
+    progressBar = [0]*10
+    listOfStillPaths = []
+    for i in range(0, len(solution['journeyPath'])-1):
+        originIndex = solution['journeyPath'][i]
+        destinationIndex = solution['journeyPath'][i+1]
+        x1 = x[originIndex]
+        y1 = y[originIndex]
+        x2 = x[destinationIndex]
+        y2 = y[destinationIndex]
+        # draw a line from one city to another
+        plt.plot([x1,x2],[y1,y2], 'k')
+
+        # make sure we add leading 0's before numbers that have less digits than others
+        if len(str(i)) != len(str(nCities-1)):
+            maxNumbDigits = len(str(nCities-1))
+            thisNumbDigits = len(str(i))
+            nMissingDigits = maxNumbDigits - thisNumbDigits
+            indexString = '0'*nMissingDigits + str(i)
+        else:
+            indexString = str(i)
+                    
+        stillFilePath = pathToMovie+'frame'+indexString+'.png'
+        plt.savefig(stillFilePath)
+        listOfStillPaths.append(stillFilePath)
+        cmplx.print_progress_bar(progressBar, i, len(solution['journeyPath'])-1)
+    return pathToMovie
+
+def make_gif_of_random_neighbor(pathToSol, solution):
+    #
+    #
+    pathToSol = pathToSol.split('/')[:-1] + ['movie']
+    pathToMovie = smpl.filepath_list_to_string(pathToSol) + '/'
+    if os.path.exists(pathToMovie) == False:
+        os.mkdir(pathToMovie)
+        print ' INFO: created directory to hold all the movie still images'
+    else:
+        print ' INFO: no need to create movie directory, one already exists'
+        print '\t- path:',pathToMovie
+
+    progressBar = [0]*10
+    listOfStillPaths = []
+    for i in range(0, len(solution['journeyPath'])-1):
+        originIndex = solution['journeyPath'][i]
+        destinationIndex = solution['journeyPath'][i+1]
+        x1 = x[originIndex]
+        y1 = y[originIndex]
+        x2 = x[destinationIndex]
+        y2 = y[destinationIndex]
+        plt.plot([x1,x2],[y1,y2], 'k')
+
+        if len(str(i)) != len(str(nCities-1)):
+            maxNumbDigits = len(str(nCities-1))
+            thisNumbDigits = len(str(i))
+            nMissingDigits = maxNumbDigits - thisNumbDigits
+            indexString = '0'*nMissingDigits + str(i)
+        else:
+            indexString = str(i)
+
+        stillFilePath = pathToMovie+'frame'+indexString+'.png'
+        plt.savefig(stillFilePath)
+        listOfStillPaths.append(stillFilePath)
+        cmplx.print_progress_bar(progressBar, i, len(solution['journeyPath'])-1)
+    return pathToMovie
+
+def make_gif_from_pngs(pathToMovie):
+    # Pass the path to the movie folder holding all the PNG's and this function
+    # try's to make a gif of them.
+    #
+    print ' INFO: Creating animated GIF'
+    outputFilePath = ''
+    try:
+        gifSavePath = pathToMovie+'animated_solution.gif'
+        import imageio
+        images = []
+        for filename in listOfStillPaths:
+            images.append(imageio.imread(filename))
+            imageio.mimsave(gifSavePath, images)
+        print '\t- GIF made!'
+        print '\t- saved @',gifSavePath
+        print '\t- HINT: To view the .gif file on Mac OSX, select it in finder then press space bar key'
+
+    except Exception as e:
+        print '\n ERROR: Ran into an issue creating GIF.'
+        print '\t- Exact Python error:', e
+        print '\n'
+
+# -------------------------------------------------------------------------------------- #
+def main(parameters):
+    print ' INFO: Parameters:'
+    for key in parameters.keys():
+        print '\t- '+key+' : '+parameters[key]
+
+    pathToMap, pathToMeta = cmplx.get_filepath_to_map_data(parameters['map_ID'])
+    try:
+       	node_locations = np.loadtxt(pathToMap)
+        print ' INFO: found a cityMap @',pathToMap
+    except Exception as e:
+        print '\n ERROR loading City Locations file'
+        print '\t- looked @', pathToMap
+        print '\t- exact Python error:', e
+        print '\n'
+        sys.exit(1)
+
+    generate_static_PNG_of_map(node_locations, parameters['map_ID'])
+    print ' INFO: saved a static image of the map @',pathToStatic
+    
     if 'sol_ID' not in parameters.keys():
         print 'INFO: Script ending\n'
         sys.exit(0)
-    # if it is, then we need to draw the solution before we show the result
     else:
         pathToSol = cmplx.get_filepath_to_solution_data(parameters['map_ID'], parameters['sol_ID'])
-
         try:
             import json
             with open(pathToSol,'r') as f:
@@ -85,87 +174,22 @@ def main(parameters):
             print
             sys.exit(1)
         
-        
         if solution['alg'] == 'greedy':
             print ' INFO: solution["alg"] detected as "greedy", commencing movie creation'
-            
-            # make a directory to house all the images
-            pathToSol = pathToSol.split('/')[:-1] + ['movie']
-            from functions import simple as smpl
-            pathToMovie = smpl.filepath_list_to_string(pathToSol) + '/'
-
-            if os.path.exists(pathToMovie) == False:
-                os.mkdir(pathToMovie)
-                print ' INFO: created directory to hold all the movie still images'
-            else:
-                print ' INFO: no need to create movie directory, one already exists'
-            print '\t- path:',pathToMovie
-
-            # save first image, which is just the city map
-            plt.savefig(pathToMovie+'cityMap.png')
-
-            print ' INFO: Ready to begin making a frame for each hop through the cityMap'
-            progressBar = [0]*10
-
-            listOfStillPaths = []
-
-            # create a whole lot of images
-            for i in range(0, len(solution['journeyPath'])-1):
-                # draw the line from one city to another
-                originIndex = solution['journeyPath'][i]
-                destinationIndex = solution['journeyPath'][i+1]
-                x1 = x[originIndex]
-                y1 = y[originIndex]
-                x2 = x[destinationIndex]
-                y2 = y[destinationIndex]
-                plt.plot([x1,x2],[y1,y2], 'k')
-
-                # make sure we add leading 0's before numbers that have less digits than others
-                if len(str(i)) != len(str(nCities-1)):
-                    maxNumbDigits = len(str(nCities-1))
-                    thisNumbDigits = len(str(i))
-                    nMissingDigits = maxNumbDigits - thisNumbDigits
-                    indexString = '0'*nMissingDigits + str(i)
-                else:
-                    indexString = str(i)
-                    
-                stillFilePath = pathToMovie+'frame'+indexString+'.png'
-                plt.savefig(stillFilePath)
-                listOfStillPaths.append(stillFilePath)
-                # print a progress bar!
-                cmplx.print_progress_bar(progressBar, i, len(solution['journeyPath'])-1)
-
-            
-            # create a gif movie!
-            print ' INFO: Creating animated GIF'
-            outputFilePath = ''
-            try:
-                gifSavePath = pathToMovie+'animated_solution.gif'
-                import imageio
-                images = []
-                for filename in listOfStillPaths:
-                    images.append(imageio.imread(filename))
-                imageio.mimsave(gifSavePath, images)
-                print '\t- GIF made!'
-                print '\t- saved @',gifSavePath
-                print '\t- HINT: To view the .gif file on Mac OSX, select it in finder then press space bar key'
-
-            except Exception as e:
-                print '\n ERROR: Ran into an issue creating GIF.'
-                print '\t- Exact Python error:', e
-                print '\n'
-
-            print 'INFO: Script done.'
-            print '\n'
-            
-
+            pathToMovie = make_gif_of_greedy(pathToSol, solution)
+            make_gif_from_pngs(pathToMovie)
+        elif solution['alg'] == 'random_neighbor':
+            print ' INFO: solution["alg"] detected as "random_neighbor", commencing movie creation'
+            # uses same function as the greedy alg
+            pathToMove = make_gif_of_greedy(pathToSol, solution)
+            make_gif_from_pngs(pathToMovie)
         else:
-            print "\n ERROR: only solution['alg'] = 'greedy' is drawable at this moment"
-            print '\n'
-            sys.exit(1)
-
-
-
+             print ' INFO: visualize.py not built to handle',solution['alg']
+        
+        print 'INFO: Script done.'
+        print '\n'
+        
+# -------------------------------------------------------------------------------------- #
 if __name__ == '__main__':
     helpOptions = ['-h','--h','-help','--help']
     if any((True for x in helpOptions if x in sys.argv)):

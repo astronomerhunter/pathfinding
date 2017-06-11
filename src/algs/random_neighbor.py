@@ -38,17 +38,15 @@ def solve(configParams, cityMap, mapMeta):
     distanceMatrix = cmplx.create_distance_matrix(cityMap, nCities)
     print '\t\t- done'
 
-    # calculate the total distance of each path
-    print '\t- forming list of city indicies'
-    unvisitedCities = range(0,nCities)
-    unvisitedCities.remove(originCity)
-    unvisitedCities.insert(0,originCity)
-    print '\t\t- unvisitedCities: '+ str(unvisitedCities)
+    # randomly order the nodes
+    journeyPath = np.random.shuffle(range(0,nCities))
+    journeyPath.remove(originCity)
+    journeyPath.insert(0,originCity)
 
-    # step through list of unvisited cities, keeping track of the distance traveled
+    # travel the randomly chosen path, tracking distance
     distance = 0.0
-    for index in range(0, len(unvisitedCities)-1):
-        distance = distance + distanceMatrix[unvisitedCities[index],unvisitedCities[index+1]]
+    for index in range(0, len(journeyPath)-1):
+        distance = distance + distanceMatrix[journeyPath[index],journeyPath[index+1]]
     
     # wrap up
     end_time = time.strftime("%H:%M:%S")
@@ -58,9 +56,9 @@ def solve(configParams, cityMap, mapMeta):
     solution['start_time'] = start_time
     solution['end_time'] = end_time
     solution['distanceMatrix'] = distanceMatrix
-    solution['distances'] = distance
+    solution['distance'] = distance
     solution['end_time'] = end_time
-    solution['unvisitedCities'] = unvisitedCities
+    solution['journeyPath'] = journeyPath
     solution['alg'] = 'random_neighbor'
-
+    
     return solution
