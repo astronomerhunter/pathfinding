@@ -33,3 +33,8 @@ The goal of this project is to create an infrastructure for estimating solutions
     - by creating their own solution algorithm
   - visualize solutions to previously executed solution algorithms
   - easily apply various solution algorithms to maps created from various map creation algorithms
+  
+  
+  ### To Do:
+  1.  Make a "--demo" flag that a user can run immediatly upon cloning repo in order to get an idea for what this codebase can do
+  1.  Rename everything away from cities and toward nodes.
