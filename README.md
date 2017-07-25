@@ -38,3 +38,4 @@ The goal of this project is to create an infrastructure for estimating solutions
   ### To Do:
   1.  Make a "--demo" flag that a user can run immediatly upon cloning repo in order to get an idea for what this codebase can do
   1.  Rename everything away from cities and toward nodes.
+1.  Automated test cases so when building a feature we can tell what fails and what passes.
