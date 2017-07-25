@@ -6,7 +6,7 @@ import itertools
 import time
 import sys
 from functions import complex as cmplx
-
+import random
 
 # -------------------------------------------------------------------------------------- #
 # Functions go here
@@ -39,7 +39,8 @@ def solve(configParams, cityMap, mapMeta):
     print '\t\t- done'
 
     # randomly order the nodes
-    journeyPath = np.random.shuffle(range(0,nCities))
+    journeyPath = range(0,nCities)
+    random.shuffle(journeyPath)
     journeyPath.remove(originCity)
     journeyPath.insert(0,originCity)
 

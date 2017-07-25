@@ -38,8 +38,9 @@ def generate_static_PNG_of_map(node_locations, map_ID):
     # TODO: use filepath_list_to_string() in simple.py instead of the following line
     pathToStatic = str('/'+os.path.join(*pathToMapFolder_list))
     plt.savefig(pathToStatic)
+    return pathToStatic
 
-def make_gif_of_greedy(pathToSol, solution):
+def make_PNGs_for_greedy(pathToSol, solution, node_locations):
     #
     #
     pathToSol = pathToSol.split('/')[:-1] + ['movie']
@@ -53,6 +54,9 @@ def make_gif_of_greedy(pathToSol, solution):
 
     progressBar = [0]*10
     listOfStillPaths = []
+    x = node_locations[:,0]
+    y = node_locations[:,1]
+    nNodes = len(x)
     for i in range(0, len(solution['journeyPath'])-1):
         originIndex = solution['journeyPath'][i]
         destinationIndex = solution['journeyPath'][i+1]
@@ -64,8 +68,8 @@ def make_gif_of_greedy(pathToSol, solution):
         plt.plot([x1,x2],[y1,y2], 'k')
 
         # make sure we add leading 0's before numbers that have less digits than others
-        if len(str(i)) != len(str(nCities-1)):
-            maxNumbDigits = len(str(nCities-1))
+        if len(str(i)) != len(str(nNodes-1)):
+            maxNumbDigits = len(str(nNodes-1))
             thisNumbDigits = len(str(i))
             nMissingDigits = maxNumbDigits - thisNumbDigits
             indexString = '0'*nMissingDigits + str(i)
@@ -76,51 +80,11 @@ def make_gif_of_greedy(pathToSol, solution):
         plt.savefig(stillFilePath)
         listOfStillPaths.append(stillFilePath)
         cmplx.print_progress_bar(progressBar, i, len(solution['journeyPath'])-1)
-    return pathToMovie
+    return pathToMovie, listOfStillPaths
 
-def make_gif_of_random_neighbor(pathToSol, solution):
+def make_GIF_from_PNGs(pathToMovie, listOfStillPaths):
     #
     #
-    pathToSol = pathToSol.split('/')[:-1] + ['movie']
-    pathToMovie = smpl.filepath_list_to_string(pathToSol) + '/'
-    if os.path.exists(pathToMovie) == False:
-        os.mkdir(pathToMovie)
-        print ' INFO: created directory to hold all the movie still images'
-    else:
-        print ' INFO: no need to create movie directory, one already exists'
-        print '\t- path:',pathToMovie
-
-    progressBar = [0]*10
-    listOfStillPaths = []
-    for i in range(0, len(solution['journeyPath'])-1):
-        originIndex = solution['journeyPath'][i]
-        destinationIndex = solution['journeyPath'][i+1]
-        x1 = x[originIndex]
-        y1 = y[originIndex]
-        x2 = x[destinationIndex]
-        y2 = y[destinationIndex]
-        plt.plot([x1,x2],[y1,y2], 'k')
-
-        if len(str(i)) != len(str(nCities-1)):
-            maxNumbDigits = len(str(nCities-1))
-            thisNumbDigits = len(str(i))
-            nMissingDigits = maxNumbDigits - thisNumbDigits
-            indexString = '0'*nMissingDigits + str(i)
-        else:
-            indexString = str(i)
-
-        stillFilePath = pathToMovie+'frame'+indexString+'.png'
-        plt.savefig(stillFilePath)
-        listOfStillPaths.append(stillFilePath)
-        cmplx.print_progress_bar(progressBar, i, len(solution['journeyPath'])-1)
-    return pathToMovie
-
-def make_gif_from_pngs(pathToMovie):
-    # Pass the path to the movie folder holding all the PNG's and this function
-    # try's to make a gif of them.
-    #
-    print ' INFO: Creating animated GIF'
-    outputFilePath = ''
     try:
         gifSavePath = pathToMovie+'animated_solution.gif'
         import imageio
@@ -154,7 +118,7 @@ def main(parameters):
         print '\n'
         sys.exit(1)
 
-    generate_static_PNG_of_map(node_locations, parameters['map_ID'])
+    pathToStatic = generate_static_PNG_of_map(node_locations, parameters['map_ID'])
     print ' INFO: saved a static image of the map @',pathToStatic
     
     if 'sol_ID' not in parameters.keys():
@@ -174,15 +138,11 @@ def main(parameters):
             print
             sys.exit(1)
         
-        if solution['alg'] == 'greedy':
-            print ' INFO: solution["alg"] detected as "greedy", commencing movie creation'
-            pathToMovie = make_gif_of_greedy(pathToSol, solution)
-            make_gif_from_pngs(pathToMovie)
-        elif solution['alg'] == 'random_neighbor':
-            print ' INFO: solution["alg"] detected as "random_neighbor", commencing movie creation'
-            # uses same function as the greedy alg
-            pathToMove = make_gif_of_greedy(pathToSol, solution)
-            make_gif_from_pngs(pathToMovie)
+        if solution['alg'] == 'greedy' or solution['alg'] == 'random_neighbor':
+            print ' INFO: solution["alg"] detected as "'+solution['alg']+'", commencing movie creation'
+            pathToMovie, listOfStillPaths = make_PNGs_for_greedy(pathToSol, solution, node_locations)
+            print ' INFO: Creating animated GIF'
+            make_GIF_from_PNGs(pathToMovie, listOfStillPaths)
         else:
              print ' INFO: visualize.py not built to handle',solution['alg']
         
