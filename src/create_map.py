@@ -3,9 +3,9 @@ USAGE: Type python create_map.py -h for useage information.
 """
 # -*- coding: utf-8 -*-
 # -------------------------------------------------------------------------------------- #
-# This function creates a map of cities.  The properties of that map draw from a
-# configuration file at /config/map_creation/parameters.config.  If the number of cities
-# is small enough, they are printed out by this function.
+# This function creates a map of nodes to visit.  The properties of that map draw from a
+# configuration file at /config/map_config.json.  If the number of nodes
+# is small enough, their locations are printed out by this function.
 #
 # Please use with Python 2.7
 #
@@ -22,22 +22,22 @@ import os
 def make_meta(configParams, map_ID):
     # This function returns a dictionary that makes up the metadata.
     return { "map_ID" : map_ID,
-             "number_of_cities" : configParams['number_of_cities']}
+             "number_of_nodes" : configParams['number_of_nodes']}
 
 
-def save_map(cityMap, mapMeta):
-    # This function creates a map ID and saves the map to "tsp/data/hist/<map_ID>/<map_ID>_locations.txt".
-    # It also saves metadata at "tsp/data/hist/<map_ID>/<map_ID>_meta.txt".
+def save_map(nodeMap, mapMeta):
+    # This function creates a map ID and saves the map to "data/maps/<map_ID>/<map_ID>_locations.txt".
+    # It also saves metadata at "data/maps/<map_ID>/<map_ID>_meta.txt".
     #
     # INPUTS:
-    #    -cityMap:	2d array of x and y locations of each city.
+    #    -nodeMap:	2d array of x and y locations of each city.
     #	 -mapMeta	dict containing meta data about map, like map_ID
     # OUTPUTS:
     #    -nothing is returned
     #
     map_ID = mapMeta['map_ID']
     mapSavePath, metaSavePath = cmplx.get_filepath_to_map_data(map_ID)
-    print '\t- saving cityMap as text file @ '+mapSavePath
+    print '\t- saving nodeMap as text file @ '+mapSavePath
 
     pathToTestExistance = cmplx.get_filepath_to_repo()
     foldersToMake = ['data','maps',map_ID]
@@ -51,7 +51,7 @@ def save_map(cityMap, mapMeta):
         np.savetxt(mapSavePath, cityMap)
     except Exception as e:
         print
-        print ' ERROR saving cityMap txt file'
+        print ' ERROR saving nodeMap txt file'
         print '\t- attempted to save @', mapSavePath
         print '\t- exact Python error:', e
         print
