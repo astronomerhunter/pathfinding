@@ -5,7 +5,7 @@
 *.pyc
 
 # EMACS temperary files
-*.py~
+*~
 
 # Data
 data/maps/*
