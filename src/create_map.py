@@ -84,12 +84,12 @@ def process_to_create_map(configParams):
     #	  -mapMeta:			dict with meta data about map
     #
     assert type(configParams) == type({})
-    temp_resource = __import__('map_creation.'+configParams['city_placement_technique']
+    temp_resource = __import__('map_creation.'+configParams['node_placement_technique']
                                , globals(), locals(), ['map_creation'], -1)
     cityMap = temp_resource.create_map(configParams)
     print ' INFO: cityMap created succesfully.'
-    print '\t- city_placement_technique: ',configParams['city_placement_technique']
-    print '\t- number_of_cities:',configParams['number_of_cities']
+    print '\t- city_placement_technique: ',configParams['node_placement_technique']
+    print '\t- number_of_cities:',configParams['number_of_nodes']
     
     # TODO ensure this is unique by checking folder to see if ID exists
     map_ID = cmplx.generate_ID('MID',5)

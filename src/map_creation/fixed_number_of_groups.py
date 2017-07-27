@@ -6,7 +6,7 @@ import numpy as np
 def create_map(configParams):
 
     # make sure configParams has correct keys within it
-    necesaryKeys = ['number_of_groups','number_of_cities','std_dev_of_offset']
+    necesaryKeys = ['number_of_groups','number_of_nodes','std_dev_of_offset']
     for key in necesaryKeys:
         assert key in configParams.keys(), "Missing necesary key ("+key+") in map_creation configParams."
 

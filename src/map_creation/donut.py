@@ -26,9 +26,9 @@ def polar_to_cartesian(theta, R):
 # -------------------------------------------------------------------------------------- #
 def create_map(configParams):
     # first define empty arrays
-    map = np.zeros(shape=[ configParams['number_of_cities'], 2])
+    map = np.zeros(shape=[ configParams['number_of_nodes'], 2])
     # loop through each element, populating map with nonzero x's and y's
-    for index in range(0, configParams['number_of_cities']):
+    for index in range(0, configParams['number_of_nodes']):
         # define initial values that are certainly not allowed 
         x = -1.0
         y = -1.0
@@ -45,5 +45,5 @@ def create_map(configParams):
     return map
 # -------------------------------------------------------------------------------------- #
 if __name__ == '__main__':
-    print create_map({'number_of_cities':10})
+    print create_map({'number_of_nodes':10})
     
