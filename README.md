@@ -36,14 +36,8 @@ The goal of this project is to create an infrastructure for estimating solutions
   
   
   ### To Do:
-  1.  Make a "--demo" flag that a user can run immediatly upon cloning repo in order to get an idea for what this codebase can do
-  1.  Rename everything away from cities and toward nodes.
+1.  Make a "--demo" flag that a user can run immediatly upon cloning repo in order to get an idea for what this codebase can do
 1.  Automated test cases so when building a feature we can tell what fails and what passes.
-1.  CLI
-1.  Convert all JSON config files to YAMl?
-1.  Remove configs entirely?
-1.  Make input checking standard for create map and do this via a YAMl config file with a single script to run for the logic
-1.  Make config JSON into a CLI with flags, one key/val pair should be all the info needed to make the map specific to that map creation type
-1.  create_map.py needs to also produce a plot with the correct flag
-1.  Fix save method such that non serilizable objects (2+ dimenionsal arrays) play nice with JSON format requirements
-1.  Add flag in create_map.py to select a home city, for now ignore it
+1.  create_map.py needs have an option to produce a .png image when generating map
+1.  Clear up why JSON is saved the way it is.  Fix save method such that non serilizable objects (2+ dimenionsal arrays) play nice with JSON format requirements
+1.  Add functionality to define an origin node and to define the ability to have to end at that origin node.
