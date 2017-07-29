@@ -4,15 +4,15 @@ if __name__ == '__main__':
     """
     create_map.py -h
     create_map.py --help
-    create_map.py random_uniform N [--save-map]
-    create_map.py ball N [--save-map]
-    create_map.py donut N [--save-map]
-    create_map.py fixed_number_of_groups N GROUPS OFFSET_STD_DEV [--save-map] 
-    create_map.py sinusoidal N X_PEAKS Y_PEAKS [--save-map]
+    create_map.py random_uniform N [--save]
+    create_map.py ball N [--save]
+    create_map.py donut N [--save]
+    create_map.py fixed_number_of_groups N GROUPS OFFSET_STD_DEV [--save] 
+    create_map.py sinusoidal N X_PEAKS Y_PEAKS [--save]
     create_map.py --version
 
     {'--help': False,
-    '--save-map': False,
+    '--save': False,
     '--version': False,
     'GROUPS': None,
     'N': 15,
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     """
     print 'TESTING:  python create_map.py random_uniform 15'
     assert 0 == module({'--help': False,
-                        '--save-map': False,
+                        '--save': False,
                         '--version': False,
                         'GROUPS': None,
                         'N': 15,
@@ -42,9 +42,9 @@ if __name__ == '__main__':
                         'fixed_number_of_groups': False,
                         'random_uniform': True,
                         'sinusoidal': False})
-    print 'TESTING:  python create_map.py random_uniform 15 --save-map'
+    print 'TESTING:  python create_map.py random_uniform 15 --save'
     assert 0 == module({'--help': False,
-                        '--save-map': True,
+                        '--save': True,
                         '--version': False,
                         'GROUPS': None,
                         'N': 15,
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     
     print 'TESTING:  python create_map.py ball 15'
     assert 0 == module({'--help': False,
-                        '--save-map': False,
+                        '--save': False,
                         '--version': False,
                         'GROUPS': None,
                         'N': 15,
@@ -73,9 +73,9 @@ if __name__ == '__main__':
                         'fixed_number_of_groups': False,
                         'random_uniform': False,
                         'sinusoidal': False})
-    print 'TESTING:  python create_map.py ball 15 --save-map'
+    print 'TESTING:  python create_map.py ball 15 --save'
     assert 0 == module({'--help': False,
-                        '--save-map': True,
+                        '--save': True,
                         '--version': False,
                         'GROUPS': None,
                         'N': 15,
@@ -91,7 +91,7 @@ if __name__ == '__main__':
 
     print 'TESTING:  python create_map.py donut 15'
     assert 0 == module({'--help': False,
-                        '--save-map': False,
+                        '--save': False,
                         '--version': False,
                         'GROUPS': None,
                         'N': 15,
@@ -104,9 +104,9 @@ if __name__ == '__main__':
                         'fixed_number_of_groups': False,
                         'random_uniform': False,
                         'sinusoidal': False})
-    print 'TESTING:  python create_map.py donut 15 --save-map'
+    print 'TESTING:  python create_map.py donut 15 --save'
     assert 0 == module({'--help': False,
-                        '--save-map': True,
+                        '--save': True,
                         '--version': False,
                         'GROUPS': None,
                         'N': 15,
@@ -122,7 +122,7 @@ if __name__ == '__main__':
 
     print 'TESTING:  python create_map.py fixed_number_of_groups 15 5 0.10'
     assert 0 == module({'--help': False,
-                        '--save-map': False,
+                        '--save': False,
                         '--version': False,
                         'GROUPS': '5',
                         'N': 15,
@@ -135,9 +135,9 @@ if __name__ == '__main__':
                         'fixed_number_of_groups': True,
                         'random_uniform': False,
                         'sinusoidal': False})
-    print 'TESTING:  python create_map.py fixed_number_of_groups 15 5 0.10 --save-map'
+    print 'TESTING:  python create_map.py fixed_number_of_groups 15 5 0.10 --save'
     assert 0 == module({'--help': False,
-                        '--save-map': True,
+                        '--save': True,
                         '--version': False,
                         'GROUPS': '5',
                         'N': 15,
@@ -155,7 +155,7 @@ if __name__ == '__main__':
 
     print 'TESTING:  python create_map.py sinusoidal 15 3 3'
     assert 0 == module({'--help': False,
-                        '--save-map': False,
+                        '--save': False,
                         '--version': False,
                         'GROUPS': None,
                         'N': 15,
@@ -168,9 +168,9 @@ if __name__ == '__main__':
                         'fixed_number_of_groups': False,
                         'random_uniform': False,
                         'sinusoidal': True})
-    print 'TESTING:  python create_map.py sinusoidal 15 3 3 --save-map'
+    print 'TESTING:  python create_map.py sinusoidal 15 3 3 --save'
     assert 0 == module({'--help': False,
-                        '--save-map': True,
+                        '--save': True,
                         '--version': False,
                         'GROUPS': None,
                         'N': 15,

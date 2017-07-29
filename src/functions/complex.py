@@ -96,7 +96,7 @@ def print_progress_bar(progressBar, currentIndex, maxIndex):
 
 
 
-def create_distance_matrix(cityMap, nCities):
+def create_vertices_matrix(cityMap, nCities):
     # When searching each possible path for the shortest overall path, you'll need to
     # repeatidly calculate the distance between any two cities.  Rather than doing
     # this at run time, this function returns a matrix that shows the distance from

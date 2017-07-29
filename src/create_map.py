@@ -4,18 +4,18 @@ placement techniques require more parameters than others.  Below, required param
 represented by capital letters.  Note their order.
 
 Usage:
+    create_map.py random_uniform N [--save]
+    create_map.py ball N [--save]
+    create_map.py donut N [--save]
+    create_map.py fixed_number_of_groups N GROUPS OFFSET_STD_DEV [--save] 
+    create_map.py sinusoidal N X_PEAKS Y_PEAKS [--save]
     create_map.py -h
     create_map.py --help
-    create_map.py random_uniform N [--save-map]
-    create_map.py ball N [--save-map]
-    create_map.py donut N [--save-map]
-    create_map.py fixed_number_of_groups N GROUPS OFFSET_STD_DEV [--save-map] 
-    create_map.py sinusoidal N X_PEAKS Y_PEAKS [--save-map]
     create_map.py --version
 
 Options:
   -h --help     Show this screen.
-  -s --save-map    Include if you would like to save script output.
+  -s --save     Include if you would like to save script output.
   --version     Show version.
 
 """
@@ -68,8 +68,15 @@ def make_map(args):
     Imports the required file, access its create_map() function and
     builds the node_locations and node_metadata variables.
     """
-    temp_resource = __import__('map_creation.'+args['TECHNIQUE'],
+
+
+    try:    
+        temp_resource = __import__('map_creation.'+args['TECHNIQUE'],
                                globals(), locals(), ['map_creation'], -1)
+    except ImportError:
+        print 'Unable to import node placement techinque for '+args['TECHNIQUE']
+        sys.exit(1)
+
     node_locations = temp_resource.create_map(args)
     print 'INFO: node_locations created succesfully.'
     
@@ -80,7 +87,7 @@ def make_map(args):
     node_metadata = {"map_id" : map_id,
                      "number_of_nodes" : args['N']}
 
-    if args['--save-map'] is True:
+    if args['--save'] is True:
         save_map(node_locations, node_metadata)
     else:
         print 'INFO: Not saving results.'
