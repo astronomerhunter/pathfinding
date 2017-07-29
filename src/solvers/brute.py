@@ -59,8 +59,7 @@ def get_all_possible_routes(N, origin_node):
     origin_adjusted_possible_routes[:,1:] = possible_routes
     return origin_adjusted_possible_routes
     
-
-
+    
 def solve(args, node_locations, node_metadata):
     """
     some description
@@ -92,9 +91,9 @@ def solve(args, node_locations, node_metadata):
 
     if args['--verbose']:
         print '- aquired '+str(len(paths))+' of them'
-        print '- populating distance matrix'
+        print '- populating vertex weight matrix'
 
-    vertex_weights = cmplx.create_vertices_matrix(node_locations, n_nodes)
+    vertex_weights = cmplx.create_vertex_weights_matrix(node_locations, n_nodes)
 
     if args['--verbose']:
         print '- done'
@@ -125,6 +124,14 @@ def solve(args, node_locations, node_metadata):
     solution['weights'] = weights
     solution['end_time'] = end_time
     solution['shortest_path_index'] = shortest_path_index
-    solution['alg'] = 'brute'
+    solution['SOLVER'] = 'brute'
+
+    if args['--verbose']:
+        print '- index, path, weight:'
+        for i in range(0, len(solution['weights'])):
+            line_to_print = '\t'+str(i)+', '+str(solution['paths'][i,:])+', '+str(solution['weights'][i])
+            if i in solution['shortest_path_index']:
+                line_to_print = line_to_print + ' *'
+            print line_to_print
 
     return solution

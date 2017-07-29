@@ -3,6 +3,7 @@ Write me
 
 Usage:
     execute.py brute MAP_ID [--save] [--verbose] [--force]
+    execute.py nearest_neighbor MAP_ID [--save] [--verbose] [--force]
     execute.py -h
     execute.py --help
     execute.py --version
@@ -22,8 +23,6 @@ from docopt import docopt
 import sys
 import ast # used to open node_metadata files
 
-
-SOLVERS_THAT_CAN_BE_DETAIL_PRINTED = ['brute']
 
 def load_map(map_id):
     """
@@ -49,21 +48,6 @@ def load_map(map_id):
         print '\n'
 
     return node_locations, node_metadata
-
-
-def print_detail_solution(alg, solution):
-    """
-    some description
-    """
-    if alg in SOLVERS_THAT_CAN_BE_DETAIL_PRINTED:
-        print '- index, path, weight:'
-        for i in range(0, len(solution['weights'])):
-            line_to_print = '\t'+str(i)+', '+str(solution['paths'][i,:])+', '+str(solution['weights'][i])
-            if i in solution['shortest_path_index']:
-                line_to_print = line_to_print + ' *'
-            print line_to_print
-    else:
-        print "- This solver can not be detail printed, only some can: "+str(SOLVERS_THAT_CAN_BE_DETAIL_PRINTED)
 
 
 def save_solution(solution):
@@ -103,9 +87,6 @@ def apply_solver(args):
     solution['sol_id'] = cmplx.generate_ID('SID', 5)
     solution['map_id'] = node_metadata['map_id']
 
-    if args['--verbose']:
-        print_detail_solution(args['SOLVER'], solution)
-
     if args['--save']:
         save_solution(solution)
     else:
@@ -117,5 +98,4 @@ def apply_solver(args):
 if __name__ == "__main__":
     cli_arguments = docopt(__doc__, version='Execute 1.0')
     cli_arguments['SOLVER'] = sys.argv[1]
-    print cli_arguments
     apply_solver(cli_arguments)
