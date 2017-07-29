@@ -1,8 +1,0 @@
-{
-"number_of_nodes": 100,
-"number_of_node_print_thresh" : 9,
-"node_placement_technique":"fixed_number_of_groups",
-"number_of_groups": 6,
-"std_dev_of_offset" : 0.05,
-"save_map": 1
-}

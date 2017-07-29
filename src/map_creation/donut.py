@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
-# This map creation algorithm creates a donut shaped map. The cities are uniformly 
-# distributed among [1,360] degrees and the radial distance is from a normal distrubtion
-# with mean = 0.5 and std dev = 0.05.
-# -------------------------------------------------------------------------------------- #
+"""
+This map creation algorithm creates a donut shaped map. The cities are uniformly 
+distributed among [1,360] degrees and the radial distance is from a normal distrubtion
+with mean = 0.5 and std dev = 0.05.
+"""
 import numpy as np
 
-# -------------------------------------------------------------------------------------- #  
+
 def get_angle_and_radius():
     # returns one angle in degrees (integer between [0,359]) and one radius.  radii are
     # chosen from a random normal distribution with mean of 0.5 and std dev of 0.05.
@@ -23,12 +23,11 @@ def polar_to_cartesian(theta, R):
     return x,y
 
 
-# -------------------------------------------------------------------------------------- #
-def create_map(configParams):
+def create_map(args):
     # first define empty arrays
-    map = np.zeros(shape=[ configParams['number_of_nodes'], 2])
+    node_locations = np.zeros(shape=[ args['N'], 2])
     # loop through each element, populating map with nonzero x's and y's
-    for index in range(0, configParams['number_of_nodes']):
+    for dummy_index in range(0, args['N']):
         # define initial values that are certainly not allowed 
         x = -1.0
         y = -1.0
@@ -39,11 +38,11 @@ def create_map(configParams):
             # make (0.5,0.5) the middle of the donut
             x = x + 0.5
             y = y + 0.5
-        map[index,0] = x
-        map[index,1] = y
+        node_locations[dummy_index,0] = x
+        node_locations[dummy_index,1] = y
 
-    return map
-# -------------------------------------------------------------------------------------- #
+    return node_locations
+
+
 if __name__ == '__main__':
-    print create_map({'number_of_nodes':10})
-    
+    pass

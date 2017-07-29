@@ -3,29 +3,38 @@
 import numpy as np
 
 # -------------------------------------------------------------------------------------- #
-def create_map(configParams):
+def create_map(args):
 
-    map = np.zeros([configParams['number_of_nodes'],2])
+    try:
+        args['X_PEAKS'] = int(args['X_PEAKS'])
+        args['Y_PEAKS'] = int(args['Y_PEAKS'])
+    except ValueError:
+        print 'X_PEAKS and Y_PEAKS must be a integers.'
+        sys.exit(1)
+        # TODO: make these raise ValueError
 
-    xFunctionInput = np.linspace(0,
-                                 np.pi*configParams['number_of_x_groups'], 
-                                 configParams['number_of_nodes'])
-    map[:,0] = np.random.choice(xFunctionInput,
-                                size=configParams['number_of_nodes'],
-                                p=np.sin(xFunctionInput)**2/np.sum(np.sin(xFunctionInput)**2))
 
-    yFunctionInput = np.linspace(0,
-                                 np.pi*configParams['number_of_y_groups'],
-                                 configParams['number_of_nodes'])
-    map[:,1] = np.random.choice(yFunctionInput,
-                                size=configParams['number_of_nodes'],
-                                p=np.sin(yFunctionInput)**2/np.sum(np.sin(yFunctionInput)**2))
+    node_locations = np.zeros([args['N'],2])
+
+    x_function_input = np.linspace(0,
+                                 np.pi*args['X_PEAKS'], 
+                                 args['N'])
+    node_locations[:,0] = np.random.choice(x_function_input,
+                                size=args['N'],
+                                p=np.sin(x_function_input)**2/np.sum(np.sin(x_function_input)**2))
+
+    y_function_input = np.linspace(0,
+                                 np.pi*args['Y_PEAKS'],
+                                 args['N'])
+    node_locations[:,1] = np.random.choice(y_function_input,
+                                size=args['N'],
+                                p=np.sin(y_function_input)**2/np.sum(np.sin(y_function_input)**2))
     
     # normalize
-    map[:,0] = map[:,0]/np.max(map[:,0])
-    map[:,1] = map[:,1]/np.max(map[:,1])
+    node_locations[:,0] = node_locations[:,0]/np.max(node_locations[:,0])
+    node_locations[:,1] = node_locations[:,1]/np.max(node_locations[:,1])
 
-    return map
+    return node_locations
 
 
 

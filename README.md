@@ -43,3 +43,4 @@ The goal of this project is to create an infrastructure for estimating solutions
 1.  Convert all JSON config files to YAMl?
 1.  Remove configs entirely?
 1.  Make input checking standard for create map and do this via a YAMl config file with a single script to run for the logic
+1.  Make config JSON into a CLI with flags, one key/val pair should be all the info needed to make the map specific to that map creation type
