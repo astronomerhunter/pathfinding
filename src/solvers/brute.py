@@ -77,7 +77,7 @@ def solve(args, node_locations, node_metadata):
         print '\nWARNING: There are more than '+str(NUMBER_NODES_TO_WARN_USER)+' cities in this map, brute forcing may take a while.'
         if raw_input('\tWould you like to proceed? ["y" to continue]  ') != 'y':
             print 'INFO: user input cancelled solve().'
-            return None
+            sys.exit(1)
 
     solution = {}
 

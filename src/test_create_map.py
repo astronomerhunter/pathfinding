@@ -1,188 +1,87 @@
-from create_map import make_map as module
+from create_map import make_map
+import copy
 
 if __name__ == '__main__':
     """
-    create_map.py -h
-    create_map.py --help
-    create_map.py random_uniform N [--save]
-    create_map.py ball N [--save]
-    create_map.py donut N [--save]
-    create_map.py fixed_number_of_groups N GROUPS OFFSET_STD_DEV [--save] 
-    create_map.py sinusoidal N X_PEAKS Y_PEAKS [--save]
-    create_map.py --version
-
-    {'--help': False,
-    '--save': False,
-    '--version': False,
-    'GROUPS': None,
-    'N': 15,
-    'OFFSET_STD_DEV': None,
-    'TECHNIQUE': 'ball',
-    'X_PEAKS': None,
-    'Y_PEAKS': None,
-    'ball': True,
-    'donut': False,
-    'fixed_number_of_groups': False,
-    'random_uniform': False,
-    'sinusoidal': False}
-    
+        {'--help': False,
+        '--save': False,
+        '--version': False,
+        'GROUPS': None,
+        'N': 15,
+        'OFFSET_STD_DEV': None,
+        'TECHNIQUE': '',
+        'X_PEAKS': None,
+        'Y_PEAKS': None,
+        'ball': False,
+        'donut': False,
+        'fixed_number_of_groups': False,
+        'random_uniform': False,
+        'sinusoidal': False}    
     """
+    empty_cli_arguments = {'--help': False,
+                            '--save': False,
+                            '--version': False,
+                            'GROUPS': None,
+                            'N': 15,
+                            'OFFSET_STD_DEV': None,
+                            'TECHNIQUE': '',
+                            'X_PEAKS': None,
+                            'Y_PEAKS': None,
+                            'ball': False,
+                            'donut': False,
+                            'fixed_number_of_groups': False,
+                            'random_uniform': False,
+                            'sinusoidal': False}
+        
+    temp = copy.deepcopy(empty_cli_arguments)
     print 'TESTING:  python create_map.py random_uniform 15'
-    assert 0 == module({'--help': False,
-                        '--save': False,
-                        '--version': False,
-                        'GROUPS': None,
-                        'N': 15,
-                        'OFFSET_STD_DEV': None,
-                        'TECHNIQUE': 'random_uniform',
-                        'X_PEAKS': None,
-                        'Y_PEAKS': None,
-                        'ball': False,
-                        'donut': False,
-                        'fixed_number_of_groups': False,
-                        'random_uniform': True,
-                        'sinusoidal': False})
+    temp['TECHNIQUE'] = 'random_uniform'
+    temp['random_uniform'] = True
+    assert make_map(temp) == 0
     print 'TESTING:  python create_map.py random_uniform 15 --save'
-    assert 0 == module({'--help': False,
-                        '--save': True,
-                        '--version': False,
-                        'GROUPS': None,
-                        'N': 15,
-                        'OFFSET_STD_DEV': None,
-                        'TECHNIQUE': 'random_uniform',
-                        'X_PEAKS': None,
-                        'Y_PEAKS': None,
-                        'ball': False,
-                        'donut': False,
-                        'fixed_number_of_groups': False,
-                        'random_uniform': True,
-                        'sinusoidal': False})
-    
+    temp['--save'] = True
+    assert make_map(temp) == 0
+
+    temp = copy.deepcopy(empty_cli_arguments)
     print 'TESTING:  python create_map.py ball 15'
-    assert 0 == module({'--help': False,
-                        '--save': False,
-                        '--version': False,
-                        'GROUPS': None,
-                        'N': 15,
-                        'OFFSET_STD_DEV': None,
-                        'TECHNIQUE': 'ball',
-                        'X_PEAKS': None,
-                        'Y_PEAKS': None,
-                        'ball': True,
-                        'donut': False,
-                        'fixed_number_of_groups': False,
-                        'random_uniform': False,
-                        'sinusoidal': False})
+    temp['TECHNIQUE'] = 'ball'
+    temp['ball'] = True
+    assert make_map(temp) == 0
     print 'TESTING:  python create_map.py ball 15 --save'
-    assert 0 == module({'--help': False,
-                        '--save': True,
-                        '--version': False,
-                        'GROUPS': None,
-                        'N': 15,
-                        'OFFSET_STD_DEV': None,
-                        'TECHNIQUE': 'ball',
-                        'X_PEAKS': None,
-                        'Y_PEAKS': None,
-                        'ball': True,
-                        'donut': False,
-                        'fixed_number_of_groups': False,
-                        'random_uniform': False,
-                        'sinusoidal': False})
+    temp['--save'] = True
+    assert make_map(temp) == 0
 
+    temp = copy.deepcopy(empty_cli_arguments)
     print 'TESTING:  python create_map.py donut 15'
-    assert 0 == module({'--help': False,
-                        '--save': False,
-                        '--version': False,
-                        'GROUPS': None,
-                        'N': 15,
-                        'OFFSET_STD_DEV': None,
-                        'TECHNIQUE': 'donut',
-                        'X_PEAKS': None,
-                        'Y_PEAKS': None,
-                        'ball': False,
-                        'donut': True,
-                        'fixed_number_of_groups': False,
-                        'random_uniform': False,
-                        'sinusoidal': False})
+    temp['TECHNIQUE'] = 'donut'
+    temp['donut'] = True
+    assert make_map(temp) == 0
     print 'TESTING:  python create_map.py donut 15 --save'
-    assert 0 == module({'--help': False,
-                        '--save': True,
-                        '--version': False,
-                        'GROUPS': None,
-                        'N': 15,
-                        'OFFSET_STD_DEV': None,
-                        'TECHNIQUE': 'donut',
-                        'X_PEAKS': None,
-                        'Y_PEAKS': None,
-                        'ball': False,
-                        'donut': True,
-                        'fixed_number_of_groups': False,
-                        'random_uniform': False,
-                        'sinusoidal': False})
+    temp['--save'] = True
+    assert make_map(temp) == 0
 
-    print 'TESTING:  python create_map.py fixed_number_of_groups 15 5 0.10'
-    assert 0 == module({'--help': False,
-                        '--save': False,
-                        '--version': False,
-                        'GROUPS': '5',
-                        'N': 15,
-                        'OFFSET_STD_DEV': '0.10',
-                        'TECHNIQUE': 'fixed_number_of_groups',
-                        'X_PEAKS': None,
-                        'Y_PEAKS': None,
-                        'ball': False,
-                        'donut': False,
-                        'fixed_number_of_groups': True,
-                        'random_uniform': False,
-                        'sinusoidal': False})
-    print 'TESTING:  python create_map.py fixed_number_of_groups 15 5 0.10 --save'
-    assert 0 == module({'--help': False,
-                        '--save': True,
-                        '--version': False,
-                        'GROUPS': '5',
-                        'N': 15,
-                        'OFFSET_STD_DEV': '0.10',
-                        'TECHNIQUE': 'fixed_number_of_groups',
-                        'X_PEAKS': None,
-                        'Y_PEAKS': None,
-                        'ball': False,
-                        'donut': False,
-                        'fixed_number_of_groups': True,
-                        'random_uniform': False,
-                        'sinusoidal': False})
+    temp = copy.deepcopy(empty_cli_arguments)
+    print 'TESTING:  python create_map.py fixed_number_of_groups 15 5 0.1'
+    temp['TECHNIQUE'] = 'fixed_number_of_groups'
+    temp['fixed_number_of_groups'] = True
+    temp['GROUPS'] = '5'
+    temp['OFFSET_STD_DEV'] = '0.1'
+    assert make_map(temp) == 0
+    print 'TESTING:  python create_map.py fixed_number_of_groups 15 5 0.1 --save'
+    temp['--save'] = True
+    assert make_map(temp) == 0
 
-
-
+    temp = copy.deepcopy(empty_cli_arguments)
     print 'TESTING:  python create_map.py sinusoidal 15 3 3'
-    assert 0 == module({'--help': False,
-                        '--save': False,
-                        '--version': False,
-                        'GROUPS': None,
-                        'N': 15,
-                        'OFFSET_STD_DEV': None,
-                        'TECHNIQUE': 'sinusoidal',
-                        'X_PEAKS': '3',
-                        'Y_PEAKS': '3',
-                        'ball': False,
-                        'donut': False,
-                        'fixed_number_of_groups': False,
-                        'random_uniform': False,
-                        'sinusoidal': True})
-    print 'TESTING:  python create_map.py sinusoidal 15 3 3 --save'
-    assert 0 == module({'--help': False,
-                        '--save': True,
-                        '--version': False,
-                        'GROUPS': None,
-                        'N': 15,
-                        'OFFSET_STD_DEV': None,
-                        'TECHNIQUE': 'sinusoidal',
-                        'X_PEAKS': '3',
-                        'Y_PEAKS': '3',
-                        'ball': False,
-                        'donut': False,
-                        'fixed_number_of_groups': False,
-                        'random_uniform': False,
-                        'sinusoidal': True})
+    temp['TECHNIQUE'] = 'sinusoidal'
+    temp['sinusoidal'] = True
+    temp['X_PEAKS'] = '3'
+    temp['Y_PEAKS'] = '3'
+    assert make_map(temp) == 0
+    print 'TESTING:  python create_map.py fixed_number_of_groups 15 3 3 --save'
+    temp['--save'] = True
+    assert make_map(temp) == 0
+
 
     pretty_string = 'All test cases passed.'
     print '!' * (len(pretty_string) + 4)

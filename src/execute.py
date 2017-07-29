@@ -3,7 +3,8 @@ Write me
 
 Usage:
     execute.py brute MAP_ID [--save] [--verbose] [--force]
-    execute.py nearest_neighbor MAP_ID [--save] [--verbose] [--force]
+    execute.py nearest_neighbor MAP_ID [--save] [--verbose]
+    execute.py random_neighbor MAP_ID [--save] [--verbose]
     execute.py -h
     execute.py --help
     execute.py --version
@@ -26,7 +27,7 @@ import ast # used to open node_metadata files
 
 def load_map(map_id):
     """
-    This function attempts to load a cityMap from /data/hist/<map_ID>/<map_ID>_locations.txt
+    This function attempts to load a node_locations from /data/hist/<map_ID>/<map_ID>_locations.txt
     """
     map_load_path, meta_load_path = cmplx.get_filepath_to_map_data(map_id)
 
@@ -36,6 +37,7 @@ def load_map(map_id):
     except Exception as e:
         print 'ERROR: opening map locaiton data.'
         print 'exact python error:',str(e)
+        sys.exit(1)
         
     print '- loading meta from '+meta_load_path
     try:
@@ -43,32 +45,28 @@ def load_map(map_id):
             meta_data_string = in_file.read()
             node_metadata = ast.literal_eval(meta_data_string)
     except Exception as e:
-        print '\n ERROR: opening map meta data.'
-        print '\t exact python error:', str(e)
-        print '\n'
-
+        print 'ERROR: opening map meta data.'
+        print 'exact python error:', str(e)
+        sys.exit(1)
     return node_locations, node_metadata
 
 
 def save_solution(solution):
     """
-    some description
+    Saves script output.
     """
-    filePathPrefix = cmplx.get_filepath_to_solution_data(solution['map_id'], solution['sol_id'])
-    print 'Attempting to save solution @ '+filePathPrefix
+    file_path_prefix = cmplx.get_filepath_to_solution_data(solution['map_id'], solution['sol_id'])
+    print 'Attempting to save solution @ '+file_path_prefix
     try:
         for key in solution.keys():
             if type(solution[key]) == type(np.zeros([10,10])):
                 solution[key] = solution[key].tolist()
-        with open(filePathPrefix, 'w') as outfile:
+        with open(file_path_prefix, 'w') as outfile:
             json.dump(solution,outfile)
         print 'INFO: solution saved as json file'
     except Exception as e:
         print 'ERROR: unable to save solution as json'
         print '- exact Python error:',str(e)
-
-
-
 
 
 def apply_solver(args):
@@ -98,4 +96,5 @@ def apply_solver(args):
 if __name__ == "__main__":
     cli_arguments = docopt(__doc__, version='Execute 1.0')
     cli_arguments['SOLVER'] = sys.argv[1]
+    print cli_arguments
     apply_solver(cli_arguments)

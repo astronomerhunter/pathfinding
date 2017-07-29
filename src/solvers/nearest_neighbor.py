@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------- #
 # This solver script estimates the shortest path through a node_locations.  It does that by
-# choosing the nearest city to go to next.  It prints a progress bar in 10% increments.
+# choosing the nearest node as the node to go to next.
 # -------------------------------------------------------------------------------------- #
 import numpy as np
 import itertools
@@ -10,8 +10,27 @@ import sys
 from functions import complex as cmplx
 
 
-def solve(args, node_locations, node_metadata):
+def chose_next_node_to_visit(args, current_node_index, vertex_weights):
+    """
+    This function selects the lowest cost unvisited function to travel to next.
+    In the case of multiple nodes have equal cost, one is randomly selected.
+    """
+    available_node_indicies = np.where(vertex_weights[current_node_index] == np.min(vertex_weights[current_node_index]))[0]
+    if len(available_node_indicies) is not 1:
+        if args['--verbose']:
+            print '- found more than 1 equidistance nearest neighbors, randomly selecting one'
+        randomly_chosen_index = np.random.randint(0, len(available_node_indicies))
+        nearest_node_index = available_node_indicies[randomly_chosen_index]
+    else:
+        nearest_node_index = available_node_indicies
+    return int(nearest_node_index)
 
+    
+def solve(args, node_locations, node_metadata):
+    """
+    This function traverses a path where the next node to be visted for any
+    given point in the path is the one with the lowest cost.
+    """
     start_time = time.strftime("%H:%M:%S")
     n_nodes = node_metadata['number_of_nodes']
     solution = {}
@@ -31,11 +50,8 @@ def solve(args, node_locations, node_metadata):
 
     # visit origin node
     current_node_index = 0
-    #vertex_weights[current_node_index, :] = np.inf
-    #vertex_weights[:, current_node_index] = np.inf
 
     # from any given node, one must travel to a new node, thus the diagnal should be infinite cost
-    # we also don't want repeats in this table make the matrix an upper triangle
     for i in range(0, n_nodes):
         vertex_weights[i, i] = np.inf
 
@@ -52,28 +68,22 @@ def solve(args, node_locations, node_metadata):
 
     
     for dummy_index in range(0, n_nodes-1):
-
         if args['--verbose']:
             progress_bar = cmplx.print_progress_bar(progress_bar,
                                                     dummy_index,
                                                     n_nodes)
 
-        nearest_node_index = np.where(vertex_weights[current_node_index] == np.min(vertex_weights[current_node_index]))[0]
-        if len(nearest_node_index) is not 1:
-            if args['--verbose']:
-                print '- found more than 1 equidistance nearest neighbors, randomly selecting one'
-            randomly_chosen_index = np.random.randint(0, len(nearest_node_index))
-            nearest_node_index = nearest_node_index[randomly_chosen_index]
-        nearest_node_index = int(nearest_node_index)
+        nearest_node_index = chose_next_node_to_visit(args, current_node_index, vertex_weights)
 
-        cost_of_path_so_far = cost_of_path_so_far + vertex_weights[current_node_index, nearest_node_index]
+        cost_of_path_so_far =+ vertex_weights[current_node_index, nearest_node_index]
+
         # make sure we dont revisit this node, do this by setting cost to it as infinite
         vertex_weights[current_node_index, :] = np.inf
         vertex_weights[:, current_node_index] = np.inf
 
         path_so_far.append(nearest_node_index)
-
         current_node_index = nearest_node_index
+
 
     end_time = time.strftime("%H:%M:%S")
     if args['--verbose']:
@@ -83,7 +93,7 @@ def solve(args, node_locations, node_metadata):
     solution['end_time'] = end_time
     solution['cost_of_path'] = cost_of_path_so_far
     solution['path'] = path_so_far
-    solution['SOLVER'] = 'greedy'
+    solution['SOLVER'] = 'nearest_neighbor'
 
     if args['--verbose']:
         print '- path, cost:'
