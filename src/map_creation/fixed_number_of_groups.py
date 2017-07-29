@@ -1,51 +1,65 @@
-# -*- coding: utf-8 -*-
-# -------------------------------------------------------------------------------------- #
+"""
+description goes here
+"""
+import sys
 import numpy as np
 
-# -------------------------------------------------------------------------------------- #
-def create_map(configParams):
 
-    # make sure configParams has correct keys within it
-    necesaryKeys = ['number_of_groups','number_of_cities','std_dev_of_offset']
-    for key in necesaryKeys:
-        assert key in configParams.keys(), "Missing necesary key ("+key+") in map_creation configParams."
+def create_map(args):
+    '''
+    necesary_keys = ['number_of_groups','number_of_nodes','std_dev_of_offset']
+    if args['--map_args'].keys()
+    included_keys = args.keys()
+    for key in necesary_keys:
+        if key not in included_keys:
+            print "Missing necesary key ("+key+") in arguments for create_map()."
+            sys.exit(0)
+    '''
+    try:
+        args['GROUPS'] = int(args['GROUPS'])
+    except ValueError:
+        print 'GROUPS must be a integer.'
+        sys.exit(1)
+        # TODO: make these raise ValueError
 
-    # make sure we have atleast as many cities as there are groups to be created
-    assert configParams['number_of_groups'] <= configParams['number_of_cities'] , "number_of_groups > number_of_cities !"
+    try:
+        args['OFFSET_STD_DEV'] = float(args['OFFSET_STD_DEV'])
+    except ValueError:
+        print 'OFFSET_STD_DEV must be a float.'
+        sys.exit(1)
 
-    # decide on the center of number_of_groups many groups
-    groupCenters = np.random.uniform(low = 0.0,
+    if args['GROUPS'] > args['N']:
+        print "Invalid inputs, GROUPS > N!"
+        sys.exit(1)
+
+    group_centers = np.random.uniform(low = 0.0,
                             high = 1.0,
-                            size = [ configParams['number_of_groups'], 2 ] )
+                            size = [ args['GROUPS'], 2 ] )
 
-    # find out which group remaining cities will become part of
-    whichGroup = np.random.randint(low=0, 
-                                   high=configParams['number_of_groups'], 
-                                   size=[configParams['number_of_cities']-configParams['number_of_groups']])
+    which_group = np.random.randint(low=0, 
+                                   high=args['GROUPS'], 
+                                   size=[args['N']-args['GROUPS']])
 
     # assign X and Y coordinates to those remaining cities
-    otherCityLocations = np.zeros([len(whichGroup),2])
-    for otherCityIndex in range(0, len(whichGroup)):
+    other_city_locations = np.zeros([len(which_group), 2])
+    for index in range(0, len(which_group)):
         
-        groupIndex = whichGroup[otherCityIndex]
+        group_index = which_group[index]
 
-        xCoordOfGroupCenter = groupCenters[groupIndex,0]
-        yCoordOfGroupCenter = groupCenters[groupIndex,1]
+        x_coord_of_group_center = group_centers[group_index, 0]
+        y_coord_of_group_center = group_centers[group_index, 1]
 
         # get polar coordinates of this cities location ofset from group HQ
-        angle = np.random.randint(low=0,high=180) # degrees
-        distance = np.random.normal(loc=0.0, scale=configParams['std_dev_of_offset'])
+        angle = np.random.randint(low=0, high=180) # degrees
+        distance = np.random.normal(loc=0.0, scale=args['OFFSET_STD_DEV'])
 
         # convert polar offset to cartesian (=X,Y) offset
-        xOffset = np.cos(angle*np.pi/180.0)*distance
-        yOffset = np.sin(angle*np.pi/180.0)*distance
+        x_offset = np.cos(angle*np.pi/180.0)*distance
+        y_offset = np.sin(angle*np.pi/180.0)*distance
 
         # TODO: make sure all cities end up wthin [0,1] in both axis
 
-        otherCityLocations[otherCityIndex,0] = xCoordOfGroupCenter + xOffset
-        otherCityLocations[otherCityIndex,1] = yCoordOfGroupCenter + yOffset
+        other_city_locations[index, 0] = x_coord_of_group_center + x_offset
+        other_city_locations[index, 1] = y_coord_of_group_center + y_offset
 
-    map = np.vstack((groupCenters,otherCityLocations))
-    return map
-
-# -------------------------------------------------------------------------------------- #
+    return np.vstack((group_centers, other_city_locations))

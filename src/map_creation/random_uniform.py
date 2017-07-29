@@ -1,11 +1,6 @@
-# -*- coding: utf-8 -*-
-# -------------------------------------------------------------------------------------- #
 import numpy as np
 
-# -------------------------------------------------------------------------------------- #
-def create_map(configParams):
-    map = np.random.uniform(low = 0.0, 
+def create_map(args):
+    return np.random.uniform(low = 0.0, 
                             high = 1.0, 
-                            size = [ configParams['number_of_cities'], 2 ] )
-    return map
-# -------------------------------------------------------------------------------------- #
+                            size = [args['N'], 2 ] )

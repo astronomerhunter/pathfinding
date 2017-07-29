@@ -19,7 +19,7 @@ def solve(configParams, cityMap, mapMeta):
     print ' INFO: Begining solve().'
     print '\t- start time:', start_time
     print '\t- method:', __file__
-    nCities = mapMeta['number_of_cities']
+    nCities = mapMeta['number_of_nodes']
     print '\t- nCities:', nCities
 
     solution = {}

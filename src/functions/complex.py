@@ -9,37 +9,6 @@ from . import simple as smpl
 
 
 # -------------------------------------------------------------------------------------- #
-def get_config_params(whichConfig):
-    # This function reads parmaters from a configuration file stored at 
-    # "tsp/config/<whichConfig>/parameters.config" and passes them back. The config
-    # file is JSON-like. 
-    #
-    # INPUTS:
-    #     -none
-    # OUTPUTS:
-    #     -cfgPrms:	JSON with everything in the config file.
-    #
-    assert type(whichConfig) == type('')
-    pathToThisFile_str = smpl.get_path_to_this_file()
-    pathToThisFile_list =  smpl.filepath_string_to_list(pathToThisFile_str)
-    # remove 'src', 'functions', 'simple.py' to get tsp/
-    pathToTPS_list = pathToThisFile_list[:-3]
-    pathToConfigFile_list = pathToTPS_list + ['config',whichConfig,'parameters.config']
-    pathToConfigFile_str = smpl.filepath_list_to_string(pathToConfigFile_list)
-    # load JSON-like config parameters
-    configParams_str = open(pathToConfigFile_str).read()
-    # convert long string into JSON
-    configParams = json.loads(configParams_str)
-    print ' INFO: Got '+whichConfig+' configuration parameters.'
-    print '\t- source: '+pathToConfigFile_str
-    print '\t- keys and values:'
-    dict_keys = list(configParams.keys())
-    for i in range(0, len(configParams.keys())):
-        print '\t\t- '+str(dict_keys[i])+' : '+str(configParams[dict_keys[i]])
-    # return JSON with configuration parameters
-    return configParams
-
-
 def get_filepath_to_repo():    
     # Retuns the path to the pathfinding/ folder.  This function is included so that a user
     # of this code doesn't have to set a bash variable with the path to the repo.
@@ -127,7 +96,7 @@ def print_progress_bar(progressBar, currentIndex, maxIndex):
 
 
 
-def create_distance_matrix(cityMap, nCities):
+def create_vertex_weights_matrix(cityMap, nCities):
     # When searching each possible path for the shortest overall path, you'll need to
     # repeatidly calculate the distance between any two cities.  Rather than doing
     # this at run time, this function returns a matrix that shows the distance from
