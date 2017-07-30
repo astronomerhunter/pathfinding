@@ -5,7 +5,7 @@ Usage:
     execute.py brute MAP_ID [--save | --save --gif] [--verbose] [--force]
     execute.py nearest_neighbor MAP_ID [--save | --save --gif] [--verbose]
     execute.py random_neighbor MAP_ID [--save | --save --gif] [--verbose]
-    execute.py scout MAP_ID N_WALKERS N_STEPS [--save | --save --gif] [--verbose]
+    execute.py mcmc MAP_ID N_WALKERS N_STEPS [--save | --save --gif] [--verbose]
     execute.py -h
     execute.py --help
     execute.py --version
@@ -19,13 +19,15 @@ Options:
   --version     Show version.
 """
 import os
-import numpy as np
 import json
-import create_map
 from docopt import docopt
 import sys
 import ast # used to open node_metadata files
+import numpy as np
 import matplotlib.pylab as plt
+import create_map
+
+sys.path.insert(1, '.')
 from functions import complex as cmplx
 from functions import simple as smpl
 

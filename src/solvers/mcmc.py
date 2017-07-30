@@ -1,53 +1,13 @@
-import numpy as np
-import itertools
+"""
+doc string
+"""
 import copy
 import time
 import sys
+import numpy as np
+from . import nearest_neighbor
+from . import random_neighbor
 from functions import complex as cmplx
-from random_neighbor import chose_random_node_to_visit
-from nearest_neighbor import chose_nearest_node_to_visit
-
-
-
-def chose_mcmc_node_to_visit(args, current_node_index, vertex_weights):
-
-    # initalize the walkers
-    n_steps_to_scout_this_loop = np.min([n_nodes - dummy_index - 1, args['N_STEPS']])
-    walker_costs = np.zeros([args['N_WALKERS']])
-    walker_paths = np.zeros([args['N_WALKERS'], n_steps_to_scout_this_loop + 1])
-    walker_paths[:, 0] = copy.deepcopy(current_node_index)
-
-    #  for each ...
-    for walker_index in range(0, args['N_WALKERS']):
-
-        # ... define a unqiue vertex weight matrix and its current location
-        vertex_weights_for_walker = copy.deepcopy(vertex_weights)
-        current_node_index_for_walker = copy.deepcopy(current_node_index)
-    
-        for dummy_walker_step_index in range(0, n_steps_to_scout_this_loop):
-
-            next_node_index_for_walker = chose_random_node_to_visit(args, current_node_index_for_walker, vertex_weights_for_walker)
-            walker_costs[walker_index] =+ vertex_weights_for_walker[current_node_index_for_walker, next_node_index_for_walker]
-
-            vertex_weights_for_walker[current_node_index_for_walker, :] = np.inf
-            vertex_weights_for_walker[:, current_node_index_for_walker] = np.inf
-
-            walker_paths[walker_index, dummy_walker_step_index] = next_node_index_for_walker
-            current_node_index_for_walker = next_node_index_for_walker
-
-    # evaluate scouting results
-    walker_index_of_min_cost = np.where(walker_costs == np.min(walker_costs))[0]
-    if len(walker_index_of_min_cost) is not 1:
-        randomly_chosen_index = np.random.randint(0, len(walker_index_of_min_cost))
-        walker_index_of_min_cost = int(walker_index_of_min_cost[randomly_chosen_index])
-    else:
-        walker_index_of_min_cost = int(walker_index_of_min_cost)
-
-    for i in range(0, n_walkers):
-        print walker_paths[i], walker_costs[i]
-
-    return walker_paths[walker_index_of_min_cost][1]
-
 
 
 def solve(args, node_locations, node_metadata):
@@ -91,6 +51,7 @@ def solve(args, node_locations, node_metadata):
     # define variables to track journey
     cost_of_path_so_far = 0.0
     path_so_far = [current_node_index]
+    unvisited_nodes = range(1, n_nodes)
 
     # create progress bar for tracking
     progress_bar = [0]*10
@@ -99,6 +60,7 @@ def solve(args, node_locations, node_metadata):
     if args['--verbose']:
         print '- begining nearest neighbor path'
 
+
     for dummy_index in range(0, n_nodes-1):
 
         if args['--verbose']:
@@ -106,10 +68,36 @@ def solve(args, node_locations, node_metadata):
                                                     dummy_index,
                                                     n_nodes)
         
-        if args['N_STEPS'] > n_nodes - dummy_index - 1:
-            next_node_index = chose_mcmc_node_to_visit(args, current_node_index, vertex_weights)
+        if len(unvisited_nodes) > args['N_STEPS']:
+
+            walker_costs = np.zeros(args['N_WALKERS'])
+            walker_first_index = np.zeros(args['N_WALKERS'])
+
+            for walker_index in range(0, args['N_WALKERS']):
+
+                walker_unvisisted_nodes = copy.deepcopy(unvisited_nodes)
+
+                # randomly create a path
+                walker_path = np.random.choice(walker_unvisisted_nodes, args['N_STEPS'], replace=False)
+                walker_first_index[walker_index] = walker_path[0]
+
+                # sum the cost associated with traveling it
+                for step_index in range(1, args['N_STEPS']):
+                    walker_costs[walker_index] =+ vertex_weights[walker_path[step_index-1], walker_path[step_index]]
+
+                if args['--verbose']:
+                    print walker_path, walker_costs[walker_index]
+
+
+            # pick the next node index
+            probabilities = walker_costs/np.sum(walker_costs)
+            next_node_index = int(np.random.choice(walker_first_index, size=1, replace=True, p=probabilities))
+
+
+        # if there are less steps remaining than a walker would walk, grab the closest one
         else:
-            next_node_index = chose_nearest_node_to_visit(args, current_node_index, vertex_weights)
+            next_node_index = nearest_neighbor.chose_nearest_node_to_visit(args, current_node_index, vertex_weights)
+
 
         cost_of_path_so_far =+ vertex_weights[current_node_index, next_node_index]
 
@@ -117,8 +105,9 @@ def solve(args, node_locations, node_metadata):
         vertex_weights[current_node_index, :] = np.inf
         vertex_weights[:, current_node_index] = np.inf
 
-        path_so_far.append(nearest_node_index)
-        current_node_index = nearest_node_index
+        path_so_far.append(next_node_index)
+        unvisited_nodes.remove(next_node_index)
+        current_node_index = next_node_index
     
 
     end_time = time.strftime("%H:%M:%S")

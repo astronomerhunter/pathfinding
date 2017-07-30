@@ -1,16 +1,13 @@
-# -------------------------------------------------------------------------------------- #
-# This solver script estimates the shortest path through a node_locations.  It does that by
-# choosing the nearest node as the node to go to next.
-# -------------------------------------------------------------------------------------- #
-import numpy as np
-import itertools
-import copy
+"""
+This solver script estimates the shortest path through a node_locations.  It does that by
+choosing the nearest node as the node to go to next.
+"""
 import time
-import sys
+import numpy as np
 from functions import complex as cmplx
 
 
-def chose_next_node_to_visit(args, current_node_index, vertex_weights):
+def chose_nearest_node_to_visit(args, current_node_index, vertex_weights):
     """
     This function selects the lowest cost unvisited function to travel to next.
     In the case of multiple nodes have equal cost, one is randomly selected.
@@ -73,7 +70,7 @@ def solve(args, node_locations, node_metadata):
                                                     dummy_index,
                                                     n_nodes)
 
-        nearest_node_index = chose_next_node_to_visit(args, current_node_index, vertex_weights)
+        nearest_node_index = chose_nearest_node_to_visit(args, current_node_index, vertex_weights)
 
         cost_of_path_so_far =+ vertex_weights[current_node_index, nearest_node_index]
 

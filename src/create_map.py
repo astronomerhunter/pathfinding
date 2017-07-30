@@ -21,13 +21,13 @@ Options:
 
 """
 import sys
+sys.path.insert(1, '.')
 import os
 import json
 import matplotlib.pylab as plt
 import numpy as np
 from functions import complex as cmplx
 from docopt import docopt
-
 
 def save_map(node_locations, node_metadata):
     """

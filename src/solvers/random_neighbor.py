@@ -1,6 +1,7 @@
+"""
+doc string
+"""
 import numpy as np
-import time
-import sys
 from . import nearest_neighbor
 
 

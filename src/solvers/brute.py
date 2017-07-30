@@ -1,16 +1,30 @@
-# -------------------------------------------------------------------------------------- #
-# This solver script finds all the possible paths.  There are (N-1)! many where N is the 
-# number of cities. It can take an extreamly long time when there are more than 10 cities.
-# This solver prints a progress bar in 10% increments.
-# -------------------------------------------------------------------------------------- #
-import numpy as np
+"""
+This solver script finds all the possible paths.  There are (N-1)! many where N is the 
+number of cities. It can take an extreamly long time when there are more than 10 cities.
+"""
 import itertools
 import time
 import sys
+import numpy as np
 from functions import complex as cmplx
 
 
 NUMBER_NODES_TO_WARN_USER = 9
+
+
+def traverse_path(paths, weights):
+    """
+    """
+    weights = np.zeros(np.shape(paths)[0])
+    for i in range(0, len(weights)):
+        this_path = paths[i,:]
+        this_weight = 0
+        for j in range(0, len(this_path)-1):
+            origin_node_idx = int(this_path[j])
+            destination_node_idx = int(this_path[j+1])
+            this_weight = this_weight + vertex_weights[origin_node_idx, destination_node_idx]
+        weights[i] = this_weight
+        progress_bar = cmplx.print_progress_bar(progress_bar, i, len(weights))
 
 
 def get_perms(N):
