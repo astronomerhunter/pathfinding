@@ -82,7 +82,7 @@ def generate_static_PNG_of_map(node_locations, node_metadata):
 
     plt.xlabel('p_1 value')
     plt.ylabel('p_2 value')
-    plt.title('Parameter values for '+node_metadata['map_id'])
+    plt.title('Map of '+node_metadata['map_id'])
 
     path_to_node_loc, path_to_meta_data = cmplx.get_filepath_to_map_data(node_metadata['map_id'])
     path_to_png = path_to_node_loc[:-4] + '_static.png'
