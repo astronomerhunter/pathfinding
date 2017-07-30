@@ -4,7 +4,7 @@ import sys
 from . import nearest_neighbor
 
 
-def chose_next_node_to_visit(args, current_node_index, vertex_weights):
+def chose_random_node_to_visit(args, current_node_index, vertex_weights):
     """
     This function randomly selects an unvisited node to travel to next.
     """
@@ -24,6 +24,6 @@ def solve(args, node_locations, node_metadata):
     in nearest_neighbor.py and then reuse its solve() function.
     """
     # Rewrite external (nearest_neighbor.py) function with internal (random_neighbor.py) function
-    nearest_neighbor.chose_next_node_to_visit = chose_next_node_to_visit
+    nearest_neighbor.chose_nearest_node_to_visit = chose_random_node_to_visit
 
     return nearest_neighbor.solve(args, node_locations, node_metadata)
