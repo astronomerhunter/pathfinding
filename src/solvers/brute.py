@@ -120,6 +120,7 @@ def solve(args, node_locations, node_metadata):
     solution['start_time'] = start_time
     solution['end_time'] = end_time
     solution['paths'] = paths
+    solution['path'] = paths[shortest_path_index, :]
     solution['vertex_weights'] = vertex_weights
     solution['weights'] = weights
     solution['end_time'] = end_time

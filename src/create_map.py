@@ -4,23 +4,27 @@ placement techniques require more parameters than others.  Below, required param
 represented by capital letters.  Note their order.
 
 Usage:
-    create_map.py random_uniform N [--save]
-    create_map.py ball N [--save]
-    create_map.py donut N [--save]
-    create_map.py fixed_number_of_groups N GROUPS OFFSET_STD_DEV [--save] 
-    create_map.py sinusoidal N X_PEAKS Y_PEAKS [--save]
+    create_map.py random_uniform N [--save | --save --display]
+    create_map.py ball N [--save | --save --display]
+    create_map.py donut N [--save | --save --display]
+    create_map.py fixed_number_of_groups N GROUPS OFFSET_STD_DEV [--save | --save --display]
+    create_map.py sinusoidal N X_PEAKS Y_PEAKS [--save | --save --display]
     create_map.py -h
     create_map.py --help
     create_map.py --version
 
 Options:
   -h --help     Show this screen.
-  -s --save     Include if you would like to save script output.
+  -s --save     Include if you would like to save a file with the script output.
+  -d --display  Requires "--save" option, include if you would like to generate a .png file of the output.
   --version     Show version.
 
 """
 import sys
 import os
+import json
+import matplotlib.pylab as plt
+import numpy as np
 from functions import complex as cmplx
 from docopt import docopt
 
@@ -33,9 +37,6 @@ def save_map(node_locations, node_metadata):
     way because I haven't found an easy way to save 2+ dimensional arrays 
     as a serializable JSON yet.  TODO: fix that ish.
     """
-    import numpy as np
-    import json
-    
     map_save_path, meta_save_path = cmplx.get_filepath_to_map_data(node_metadata['map_id'])
 
     path_to_test_existance = cmplx.get_filepath_to_repo()
@@ -63,13 +64,37 @@ def save_map(node_locations, node_metadata):
         sys.exit(1)
 
 
+def generate_static_PNG_of_map(node_locations, node_metadata):
+    """
+    some description
+    """
+    x = node_locations[:, 0]
+    y = node_locations[:, 1]
+
+    plt.scatter(x, y)
+
+    xLowerLimit = min(x) - 0.10*(np.abs(max(x)-min(x)))
+    xUpperLimit = max(x) + 0.10*(np.abs(max(x)-min(x)))
+    yLowerLimit = min(y) - 0.10*(np.abs(max(y)-min(y)))
+    yUpperLimit = max(y) + 0.10*(np.abs(max(y)-min(y)))
+    plt.xlim([xLowerLimit,xUpperLimit])
+    plt.ylim([yLowerLimit,yUpperLimit])
+
+    plt.xlabel('p_1 value')
+    plt.ylabel('p_2 value')
+    plt.title('Map of '+node_metadata['map_id'])
+
+    path_to_node_loc, path_to_meta_data = cmplx.get_filepath_to_map_data(node_metadata['map_id'])
+    path_to_png = path_to_node_loc[:-4] + '_static.png'
+    plt.savefig(path_to_png)
+    print 'Saved a .png file @', path_to_png
+
+
 def make_map(args):
     """
     Imports the required file, access its create_map() function and
     builds the node_locations and node_metadata variables.
     """
-
-
     try:    
         temp_resource = __import__('map_creation.'+args['TECHNIQUE'],
                                globals(), locals(), ['map_creation'], -1)
@@ -89,10 +114,13 @@ def make_map(args):
 
     if args['--save'] is True:
         save_map(node_locations, node_metadata)
+        if args['--display'] is True:
+            generate_static_PNG_of_map(node_locations, node_metadata)
     else:
         print 'INFO: Not saving results.'
 
     return 0
+
 
 if __name__ == "__main__":
 
@@ -106,5 +134,3 @@ if __name__ == "__main__":
         sys.exit(1)
 
     make_map(cli_arguments)
-
-    
