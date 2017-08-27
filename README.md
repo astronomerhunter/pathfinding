@@ -1,11 +1,11 @@
-### The Problem
+### Introduction
+Finding the most desirable path between some locations is a general, previlent problem.  This codebase facilitates finding the most desireable path among a set of locations, so long as information about those locations is provided.  In this quanitative exploration, we refer to these locations as "Nodes", each having some position in space, such as longitude and latitude.  The "most desirable path" between nodes is normally the path that visits all the nodes, but minimizes some cost funciton, such as time taken to traverse the path or distance traveled along the path.  In other words, we want to go everywhere but while costing us the least.  We can generalize this problem and use an algorithmic approach to find the most desirable path.
+
+This repository allows one to apply algorithms designed to quickly obtain the most desirable path.  Such algorithms are useless without a set of nodes to test them on, so the feature to create sets of nodes with various characteristics is included.  This codebase also makes it very easy to create and test user-created algorithms.  To learn more about the code, read `The Codebase` section.
+
+
+### A Quantitative Description of the Problem
 Given a set of N static nodes, each having p<sub>1</sub> and p<sub>2</sub> where 0 <= p<sub>1</sub>, p<sub>2</sub> <= 1, find the minimum cost path that touches all N nodes, where the cost is defined as the 2 dimensional cartesian distance between any two nodes.
-
-
-### Path Finding through Set of Nodes
-Calculating the the minimum cost path through a set of notes is a computational taxing problem.  One must perform on the order of N! calculations to find the optimal path through a set of N nodes.  This becomes impractical on a standard Macbook when N > 10.  Estimating the optimal solution using intellegent algorithms is much more effective technique that normally results within 10% of the optimal solution with the most pragmatic algorithms.
-
-This software package allows users to rapidly develop and test algorithms to estimate the optimal path.  With the code in this repository, one leverage the easy-to-use CLI to focus on the development of the interesting bits: the pathfinding algorithm itself.
 
 
 ### Sample Solution
@@ -17,7 +17,9 @@ The below animated solution uses the "nearest_neighbor" algorithm, also called t
 
 
 ### The Codebase
-Users of this codebase can:
+Calculating the the minimum cost path through a set of notes is a computational taxing problem.  One must perform on the order of N! calculations to find the optimal path through a set of N nodes.  This becomes impractical on a standard Macbook when N > 10.  Estimating the optimal solution using intellegent algorithms is much more effective technique that normally results within 10% of the optimal solution with the most pragmatic algorithms.
+
+This software package allows users to rapidly develop and test algorithms to estimate the optimal path.  With the code in this repository, one leverage the easy-to-use CLI to focus on the development of the interesting bits: the pathfinding algorithm itself.  Users of this codebase can:
 1.  Create sets of nodes using `src/create_map.py`.  The placement of the nodes is based on some sort of 2D distriubtion.  A user can create their own distribution function or use any of the built in ones available at `src/map_creation/*.py`.  A distribution function can take various other parameters, for example `fixed_number_of_groups` requires the user to specify how many groups to create.  For examples of built in distribution functions, see `data/sample_maps/*.png`.  Currently the build in distribution functions are:
     1.  `random_uniform`: randomly distribute nodes
     1.  `ball`: a normal distribution in p<sub>1</sub> and p<sub>2</sub> centered at (0.5, 0.5)
