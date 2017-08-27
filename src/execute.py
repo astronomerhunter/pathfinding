@@ -5,7 +5,6 @@ Usage:
     execute.py brute MAP_ID [--save | --save --gif] [--verbose] [--force]
     execute.py nearest_neighbor MAP_ID [--save | --save --gif] [--verbose]
     execute.py random_neighbor MAP_ID [--save | --save --gif] [--verbose]
-    execute.py mcmc MAP_ID N_WALKERS N_STEPS [--save | --save --gif] [--verbose]
     execute.py -h
     execute.py --help
     execute.py --version
