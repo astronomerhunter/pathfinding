@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="800/1.2" height="600/1.2" src="https://github.com/astronomerhunter/pathfinding/blob/master/data/sample_solutions/animated_solution.gif">
+</p>
+
 ### Introduction
 Finding the most desirable path between some locations is a general, previlent problem.  This codebase facilitates finding the most desireable path among a set of locations, so long as information about those locations is provided.  In this quanitative exploration, we refer to these locations as "Nodes", each having some position in space, such as longitude and latitude.  The "most desirable path" between nodes is normally the path that visits all the nodes, but minimizes some cost funciton, such as time taken to traverse the path or distance traveled along the path.  In other words, we want to go everywhere but while costing us the least.  We can generalize this problem and use an algorithmic approach to find the most desirable path.
 
@@ -6,14 +10,6 @@ This repository allows one to apply algorithms designed to quickly obtain the mo
 
 ### A Quantitative Description of the Problem
 Given a set of N static nodes, each having p<sub>1</sub> and p<sub>2</sub> where 0 <= p<sub>1</sub>, p<sub>2</sub> <= 1, find the minimum cost path that touches all N nodes, where the cost is defined as the 2 dimensional cartesian distance between any two nodes.
-
-
-### Sample Solution
-The below animated solution uses the "nearest_neighbor" algorithm, also called the "greedy" algorithm, to estimate the optimal path through 100 nodes.  Hint: if the .gif isn't loading, give it a minute, its about 5 MB large.  
-
-<p align="center">
-  <img width="800/1.2" height="600/1.2" src="https://github.com/astronomerhunter/pathfinding/blob/master/data/sample_solutions/animated_solution.gif">
-</p>
 
 
 ### The Codebase
