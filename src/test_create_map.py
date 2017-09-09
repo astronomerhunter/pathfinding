@@ -21,6 +21,7 @@ if __name__ == '__main__':
     empty_cli_arguments = {'--help': False,
                             '--save': False,
                             '--version': False,
+                            '--display': False,
                             'GROUPS': None,
                             'N': 15,
                             'OFFSET_STD_DEV': None,
