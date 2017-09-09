@@ -66,7 +66,6 @@ def solve(args, node_locations, node_metadata):
     if args['--verbose']:
         print '- begining nearest neighbor path'
 
-    
     for dummy_index in range(0, n_nodes-1):
         if args['--verbose']:
             progress_bar = cmplx.print_progress_bar(progress_bar,

@@ -120,9 +120,9 @@ def solve(args, node_locations, node_metadata):
     solution['start_time'] = start_time
     solution['end_time'] = end_time
     solution['paths'] = paths
-    solution['path'] = paths[shortest_path_index, :]
+    solution['path'] = [int(i) for i in paths[shortest_path_index, :][0]]
     solution['vertex_weights'] = vertex_weights
-    solution['cost_of_path'] = np.min(weights)
+    solution['cost_of_path'] = float(weights[shortest_path_index])
     solution['weights'] = weights
     solution['end_time'] = end_time
     solution['shortest_path_index'] = shortest_path_index

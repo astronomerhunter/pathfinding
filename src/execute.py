@@ -75,7 +75,7 @@ def make_gif(args, solution, node_locations, node_metadata):
 
     plt.xlabel('p_1 value')
     plt.ylabel('p_2 value')
-    plt.title(solution['sol_id']+' for '+node_metadata['map_id'])
+    plt.title('{} ({}) {} ({})'.format(node_metadata['technique'], node_metadata['map_id'], solution['SOLVER'], solution['sol_id']))
 
 
     if args['--verbose']:
@@ -101,7 +101,6 @@ def make_gif(args, solution, node_locations, node_metadata):
         y_1 = y[origin_index]
         x_2 = x[destination_index]
         y_2 = y[destination_index]
-
         plt.plot([x_1, x_2],[y_1, y_2], 'k')
 
         # make sure we add leading 0's before numbers that have less digits than others
@@ -135,6 +134,7 @@ def make_gif(args, solution, node_locations, node_metadata):
         print 'ERROR: Ran into an issue creating GIF.'
         print '- Exact Python error:', e
 
+    plt.close()
 
 def save_solution(solution):
     """

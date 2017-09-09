@@ -2,10 +2,12 @@
 Words go here.
 
 Usage:
-    wrapper.py N MAPS ALGS
+    wrapper.py N MAPS ALGS [-g]
 
 Options:
     --version     Show version.
+    -g --gif      Creates a .gif of the solution.
+
 
 
 """
@@ -79,6 +81,8 @@ if __name__ == '__main__':
             executeTempArgs['MAP_ID'] = node_metadata['map_id']
             executeTempArgs['--save'] = True
             executeTempArgs['--force'] = True
+            if cliArguments['--gif'] is True:
+                executeTempArgs['--gif'] = True
             statusCode, solution = apply_solver(executeTempArgs)
             solutions[node_metadata['map_id']][solution['sol_id']] = solution
 
