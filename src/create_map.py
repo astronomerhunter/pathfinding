@@ -109,9 +109,11 @@ def make_map(args):
     map_id = cmplx.generate_ID('MID', 5)
     print '- map_ID: '+ map_id
     
-    node_metadata = {"map_id" : map_id,
-                     "number_of_nodes" : args['N']}
-
+    node_metadata = {
+        "map_id" : map_id,
+        'technique': args['TECHNIQUE'],
+        "number_of_nodes" : args['N']
+    }
     if args['--save'] is True:
         save_map(node_locations, node_metadata)
         if args['--display'] is True:
@@ -119,7 +121,7 @@ def make_map(args):
     else:
         print 'INFO: Not saving results.'
 
-    return 0
+    return 0, node_metadata, node_locations
 
 
 if __name__ == "__main__":

@@ -122,6 +122,7 @@ def solve(args, node_locations, node_metadata):
     solution['paths'] = paths
     solution['path'] = paths[shortest_path_index, :]
     solution['vertex_weights'] = vertex_weights
+    solution['cost_of_path'] = np.min(weights)
     solution['weights'] = weights
     solution['end_time'] = end_time
     solution['shortest_path_index'] = shortest_path_index

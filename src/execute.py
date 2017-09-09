@@ -155,7 +155,7 @@ def save_solution(solution):
 
 
 def apply_solver(args):
-    
+
     node_locations, node_metadata = load_map(args['MAP_ID'])
 
     try:
@@ -177,7 +177,7 @@ def apply_solver(args):
     else:
         print 'INFO: Not saving results.'
 
-    return 0
+    return 0, solution
 
 
 if __name__ == "__main__":
