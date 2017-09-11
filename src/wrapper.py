@@ -16,9 +16,7 @@ from docopt import docopt
 from create_map import make_map
 from execute import apply_solver
 
-if __name__ == '__main__':
-    cliArguments = docopt(__doc__, version='Wrapper 1.0')
-    createMapArguments = {
+createMapArguments = {
         '--help': False,
         '--save': False,
         '--version': False,
@@ -35,19 +33,23 @@ if __name__ == '__main__':
         'random_uniform': False,
         'sinusoidal': False
     }
-    executeArguments = {
-        '--force': False,
-        '--gif': False,
-        '--help': False,
-        '--save': False,
-        '--verbose': False,
-        '--version': False,
-        'MAP_ID': None,
-        'SOLVER': None,
-        'brute': False,
-        'nearest_neighbor': False,
-        'random_neighbor': False
-    }
+executeArguments = {
+    '--force': False,
+    '--gif': False,
+    '--help': False,
+    '--save': False,
+    '--verbose': False,
+    '--version': False,
+    'MAP_ID': None,
+    'SOLVER': None,
+    'brute': False,
+    'nearest_neighbor': False,
+    'random_neighbor': False
+}
+
+
+def main(cliArguments):
+
     solutions = {}
 
     cliArguments['MAPS'] = cliArguments['MAPS'].split(',')
@@ -90,3 +92,8 @@ if __name__ == '__main__':
         for solKey in solutions[mapKey].keys():
             if solKey != 'metadata':
                 print '{} ({}) {} ({}): {}'.format(mapKey, solutions[mapKey]['metadata'], solKey, solutions[mapKey][solKey]['SOLVER'], solutions[mapKey][solKey]['cost_of_path'])
+
+
+if __name__ == '__main__':
+    cliArguments = docopt(__doc__, version='Wrapper 1.0')
+    main(cliArguments)

@@ -47,8 +47,6 @@ def get_all_possible_routes(N, origin_node):
             pass
     # the fancy method to get the possible routes
     possible_routes = list( itertools.permutations(list_of_nodes) )
-    # possible_routes is symetrical, ex: path [1,2,3]==[3,2,1]. only first half is unique
-    possible_routes = possible_routes[:len(possible_routes)/2]
     # arrays are cool
     possible_routes = np.asarray(possible_routes)
     # tac on origin city as first node

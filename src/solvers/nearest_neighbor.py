@@ -74,7 +74,7 @@ def solve(args, node_locations, node_metadata):
 
         nearest_node_index = chose_next_node_to_visit(args, current_node_index, vertex_weights)
 
-        cost_of_path_so_far =+ vertex_weights[current_node_index, nearest_node_index]
+        cost_of_path_so_far = cost_of_path_so_far + vertex_weights[current_node_index, nearest_node_index]
 
         # make sure we dont revisit this node, do this by setting cost to it as infinite
         vertex_weights[current_node_index, :] = np.inf
