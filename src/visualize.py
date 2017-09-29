@@ -56,6 +56,7 @@ def make_PNGs_for_greedy(pathToSol, solution, node_locations):
     listOfStillPaths = []
     x = node_locations[:,0]
     y = node_locations[:,1]
+
     nNodes = len(x)
     for i in range(0, len(solution['journeyPath'])-1):
         originIndex = solution['journeyPath'][i]
@@ -138,7 +139,7 @@ def main(parameters):
             print
             sys.exit(1)
         
-        if solution['alg'] == 'greedy' or solution['alg'] == 'random_neighbor':
+        if solution['alg'] in ['greedy', 'random_neighbor', 'nearest_neighbor']
             print ' INFO: solution["alg"] detected as "'+solution['alg']+'", commencing movie creation'
             pathToMovie, listOfStillPaths = make_PNGs_for_greedy(pathToSol, solution, node_locations)
             print ' INFO: Creating animated GIF'
