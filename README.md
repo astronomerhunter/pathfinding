@@ -29,24 +29,24 @@ This software package allows users to rapidly develop and test algorithms to est
 
 ### Notes
 Some important notes:
-    1.  Solutions visit all nodes
-    1.  The first node in the cityLocations file is considered the origin.  This is unchangeable.
-    1.  From any node one can visit any other node as long as they assume the cost in the cost matrix
-        1.  This is important because in some Traveling Salesmen Problems, not every node can visit each other node.  We can account for this case by setting the cost of this path and its inverse (A->B has inverse B->A) to infinity in the cost matrix.  By doing this we introduce the subcase where a set of nodes may be intrinsicly unable to travel to another set of nodes, resulting in the cost of the lowest cost path equal to infinity.
-    1.  Once a path from A->B is taken, it and its inverse is removed from possible future paths to be taken.  AKA no repeats.
-        1.  To explain, consider set {A, B, C, D}.  The path A->B->C->D is obvious, but the above statement disallows A->B->C->B->A->D.  If we considered paths like this I believe there would huge, but finitely many paths to consider on a set of finite size.  
+1.  Solutions visit all nodes
+1.  The first node in the cityLocations file is considered the origin.  This is unchangeable.
+1.  From any node one can visit any other node as long as they assume the cost in the cost matrix
+    1.  This is important because in some Traveling Salesmen Problems, not every node can visit each other node.  We can account for this case by setting the cost of this path and its inverse (A->B has inverse B->A) to infinity in the cost matrix.  By doing this we introduce the subcase where a set of nodes may be intrinsicly unable to travel to another set of nodes, resulting in the cost of the lowest cost path equal to infinity.
+1.  Once a path from A->B is taken, it and its inverse is removed from possible future paths to be taken.  AKA no repeats.
+    1.  To explain, consider set {A, B, C, D}.  The path A->B->C->D is obvious, but the above statement disallows A->B->C->B->A->D.  If we considered paths like this I believe there would huge, but finitely many paths to consider on a set of finite size.  
 
 
 ### Want To Contribute?
 The goal of this project is to create an infrastructure for estimating solutions of the problem.  The infrastructure should:
-    - allow for a user to easily create an randomly generated node map:
-        - using premade algorithums
-        - by creating their own map creation algorithm
-    - allow for a user to easily apply a solution estimation algorithm to a node map:
-        - using premade algorithms
-        - by creating their own solution algorithm
-    - visualize solutions to previously executed solution algorithms
-    - easily apply various solution algorithms to maps created from various map creation algorithms
+- allow for a user to easily create an randomly generated node map:
+    - using premade algorithums
+    - by creating their own map creation algorithm
+- allow for a user to easily apply a solution estimation algorithm to a node map:
+    - using premade algorithms
+    - by creating their own solution algorithm
+- visualize solutions to previously executed solution algorithms
+- easily apply various solution algorithms to maps created from various map creation algorithms
   
   
 ### To Do:
