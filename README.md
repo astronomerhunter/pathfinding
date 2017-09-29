@@ -3,9 +3,55 @@
 </p>
 
 ### Introduction
+Imagine you're going on a road trip and you want to visit some number of cities while spending the shortest amount of time on the road.  Obviously some paths are more efficent than others; you'd want to avoid routes like New York to Los Angles to Boston and instead favor maybe NYC to Boston to LA.  How does one find the most efficent path?  Would you be willing to settle for a path that takes only slightly longer than the most efficent path?  These questions are points of whats called the Traveling Salesmen Problem, or TSP.
+
+The generalization of the TSP is previlent in the world today. Package delivery, circut board manufactoring, and product procurement in warehouses all involve our generalized path finding problem.  At the moment, mankind has only developed one reliable method to solve this general problem, but the drawbacks of the surefire method are extreme.  Because of this, many techniques have been developed to estimate the optimal route.  These estimations can come very close to the optimal solution with relatively low reprocussions of getting there.  The software in this Github repository offers the investigative reader the ability to learn about various predictive techniques.
+
+This Github repository:
+- walks the reader through the details of the problem at hand
+- provides sample algorithms that can be used to solve the problem
+- allows the user to create custom algorithms to solve the problem
+- creations visualizations of the problem and solution
+
+Ultimately, this software and accompaning documentation was created with the following concepts in mind:
+- Readability.  Anyone with a brief introduction to Python should be able to interpret the code and with a college background in Mathematics one should be able to digest the documentation.
+- Education.  Complex concepts are assemblies of simplier ones; learn as you go.  This package was created as an exercise in communication just as much as algorithm development.  Having said that, there are some phrases I may use that one may not recognize.  Use the Google.
+- Customizability.  The software should facilitation integration of custom features as to fully empower the user to learn as much as possible.
+- Generalization.  By avoiding limitations in our explanations, we allow the reader to not learn about a niche computer science problem but instead apply the knowledge gained to as many of their endevors as possible.  You'll notice this repository doesn't include the phrase "Traveling Salesmen Probem".  
+
+To learn about the problem in detail, its best to provide a list of phrases used in this package and their documentation.
+
+### Vocabulary
+- The problem: We can't define the problem without first defining its components, such as nodes, costs, and paths.  Recall that one core concept of this package is the "teach as you go" philosophy.  We'll revisit the defination of the problem soon.
+- node: a point of interest.  Since a node is a point, in the mathimatical sense, it has some defining characteristics.  A point on a map of the globe may have two defining characteristics, longitude or lattitude.  Likewise a point on an X, Y plot is defined by its X-coordinate and its Y-coordinate.  Because we desire generalization, we're going to call each point ``p_n`` where ``n`` is a counting number that denotes a unique indentifier of that node.  For example, if I have three nodes, I could unique assign them each a name like ``p_1``, ``p_2``, and ``p_3``.
+- cost
+- optimal path
+- optimal cost
+- distance matrix/2D distance arary
+- combinatorial optimization
+
+### (Boring) Vocabulary
+- The package: this is the phrase we'll use to refer to the combination of documentation, code, and reccomended external resources.
+- The reader/The user: You!
+
+
+
+Even more interesting is how 
+
 Finding the most desirable path between some locations is a general, previlent problem.  This codebase facilitates finding the most desireable path among a set of locations, so long as information about those locations is provided.  In this quanitative exploration, we refer to these locations as "Nodes", each having some position in space, such as longitude and latitude.  The "most desirable path" between nodes is normally the path that visits all the nodes, but minimizes some cost funciton, such as time taken to traverse the path or distance traveled along the path.  In other words, we want to go everywhere but while costing us the least.  We can generalize this problem and use an algorithmic approach to find the most desirable path.
 
 This repository allows one to apply algorithms designed to quickly obtain the most desirable path.  Such algorithms are useless without a set of nodes to test them on, so the feature to create sets of nodes with various characteristics is included.  This codebase also makes it very easy to create and test user-created algorithms.  To learn more about the code, read `The Codebase` section.
+
+
+### Vocabulary
+- node
+- cost
+- optimal path
+- optimal cost
+- distance matrix/2D distance arary
+- combinatorial optimization
+
+### About the Author
 
 
 ### A Quantitative Description of the Problem
@@ -55,13 +101,6 @@ The goal of this project is to create an infrastructure for estimating solutions
 1.  Clear up why JSON is saved the way it is.  Fix save method such that non serilizable objects (2+ dimenionsal arrays) play nice with JSON format requirements.
     1.  Update: curretly using `toList()` to make 2D arrays serializable.
 1.  Add functionality to define an origin node and to define the ability to have to end at that origin node.
-1.  Add vocabulary section.
-    1.  Combinatorial Optimization
-    1.  node
-    1.  optimal path
-    1.  optimal cost
-    1.  distance matrix/2D distance array
-    1.  set of nodes/node set
 1.  Redo CLI.
 1.  Use YAML...
 1.  Can stoichastic branches help?
