@@ -60,6 +60,12 @@ The goal of this project is to create an infrastructure for estimating solutions
   1.  node
   1.  optimal path
   1.  optimal cost
-  1.  
+  1.  distance matrix/2D distance array
+  1.  set of nodes/node set
 1.  Redo CLI.
 1.  Use YAML...
+1.  Can stoichastic branches help?
+1.  What about a ML algorithm?
+1.  Be able to easily create statistics using a `wrapper.py` like program about how different algorithms work on different types of maps.
+1.  What about cases where the distance Matrix changes over time?
+1.  Decide if distance matrix can be used to fully power algs working on a set of nodes.  Do the algs need the actual city locations too?
