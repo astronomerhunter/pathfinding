@@ -23,7 +23,7 @@ To learn about the problem in detail, its best to provide a list of phrases used
 
 ### Vocabulary
 - The problem: We can't define the problem without first defining its components, such as nodes, costs, and paths.  Recall that one core concept of this package is the "teach as you go" philosophy.  We'll revisit the defination of the problem soon.
-- node: a point of interest.  Since a node is a point, in the mathimatical sense, it has some defining characteristics.  A point on a map of the globe may have two defining characteristics, longitude or lattitude.  Likewise a point on an X, Y plot is defined by its X-coordinate and its Y-coordinate.  Because we desire generalization, we're going to call each point ``p_n`` where ``n`` is a counting number that denotes a unique indentifier of that node.  For example, if I have three nodes, I could unique assign them each a name like ``p_1``, ``p_2``, and ``p_3``.
+- node: a point of interest.  Since a node is a point, in the mathimatical sense, it has some defining characteristics.  A point on a map of the globe may have two defining characteristics, longitude or lattitude.  Likewise a point on an X, Y plot is defined by its X-coordinate and its Y-coordinate.  Because we desire generalization, we're going to call each point $p_n$ where  $n$ is a counting number that denotes a unique indentifier of that node.  For example, if I have three nodes, I could unique assign them each a name like $p_1$, $p_2$, and $p_3$.
 - cost
 - optimal path
 - optimal cost
