@@ -101,6 +101,6 @@ ENV/
 .ropeproject
 
 # LaTeX
-.aux
-.out
-.gz
+*.aux
+*.out
+*.gz
