@@ -93,12 +93,17 @@ def main(cliArguments):
                 solutions[node_metadata['map_id']][solution['sol_id']] = solution
 
     # Print all the soltions after everything is finished running.
+    costs = []
     for mapKey in solutions.keys():
         for solKey in solutions[mapKey].keys():
             if solKey != 'metadata':
                 print '{} ({}) {} ({}): {}'.format(mapKey, solutions[mapKey]['metadata'], solKey, solutions[mapKey][solKey]['SOLVER'], solutions[mapKey][solKey]['cost_of_path'])
-
-
+                costs.append(solutions[mapKey][solKey]['cost_of_path'])
+    print np.mean(costs)
+    print costs
+    varience = np.sum((np.mean(costs) - costs)**2 / len(costs))
+    print varience 
+ 
 if __name__ == '__main__':
     cliArguments = docopt(__doc__, version='Wrapper 1.0')
     if cliArguments['--cycles'] == None:
