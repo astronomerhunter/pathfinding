@@ -1,3 +1,9 @@
+# Side effects of LaTeX compilation
+*.aux
+*.out
+*.gz
+*.tex
+
 # Mac OSX Finder files
 *.DS_Store
 
