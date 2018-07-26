@@ -2,9 +2,9 @@
 Write me
 
 Usage:
-    execute.py brute MAP_ID [--save | --save --gif] [--verbose] [--force]
-    execute.py nearest_neighbor MAP_ID [--save | --save --gif] [--verbose]
-    execute.py random_neighbor MAP_ID [--save | --save --gif] [--verbose]
+    execute.py brute graph_ID [--save | --save --gif] [--verbose] [--force]
+    execute.py nearest_neighbor graph_ID [--save | --save --gif] [--verbose]
+    execute.py random_neighbor graph_ID [--save | --save --gif] [--verbose]
     execute.py -h
     execute.py --help
     execute.py --version
@@ -20,7 +20,7 @@ Options:
 import os
 import numpy as np
 import json
-import create_map
+import create_graph
 from docopt import docopt
 import sys
 import ast # used to open node_metadata files
@@ -29,28 +29,28 @@ from functions import complex as cmplx
 from functions import simple as smpl
 
 
-def load_map(map_id):
+def load_graph(graph_id):
     """
-    This function attempts to load a node_locations from /data/hist/<map_ID>/<map_ID>_locations.txt
+    This function attempts to load a node_locations from /data/hist/<graph_ID>/<graph_ID>_locations.txt
     """
-    map_load_path, meta_load_path = cmplx.get_filepath_to_map_data(map_id)
+    graph_load_path, meta_load_path = cmplx.get_filepath_to_graph_data(graph_id)
 
-    print '- loading map from '+map_load_path
+    print('- loading graph from', graph_load_path)
     try:
-        node_locations = np.loadtxt(map_load_path)
+        node_locations = np.loadtxt(graph_load_path)
     except Exception as e:
-        print 'ERROR: opening map locaiton data.'
-        print 'exact python error:',str(e)
+        print('ERROR: opening graph locaiton data.')
+        print('exact python error:',str(e))
         sys.exit(1)
         
-    print '- loading meta from '+meta_load_path
+    print('- loading meta from',meta_load_path)
     try:
         with open(meta_load_path, 'r') as in_file:
             meta_data_string = in_file.read()
             node_metadata = ast.literal_eval(meta_data_string)
     except Exception as e:
-        print 'ERROR: opening map meta data.'
-        print 'exact python error:', str(e)
+        print('ERROR: opening graph meta data.')
+        print('exact python error:', e)
         sys.exit(1)
     return node_locations, node_metadata
 
@@ -75,14 +75,14 @@ def make_gif(args, solution, node_locations, node_metadata):
 
     plt.xlabel('p_1 value')
     plt.ylabel('p_2 value')
-    plt.title('{} ({}) {} ({})'.format(node_metadata['technique'], node_metadata['map_id'], solution['SOLVER'], solution['sol_id']))
+    plt.title('{} ({}) {} ({})'.format(node_metadata['technique'], node_metadata['graph_id'], solution['SOLVER'], solution['sol_id']))
 
 
     if args['--verbose']:
         progress_bar = [0]*10
-        print 'Starting process to make individual .png files.'
+        print('Starting process to make individual .png files.')
 
-    path_to_sol = cmplx.get_filepath_to_solution_data(node_metadata['map_id'],
+    path_to_sol = cmplx.get_filepath_to_solution_data(node_metadata['graph_id'],
                                                       solution['sol_id'])
     path_to_sol = smpl.filepath_string_to_list(path_to_sol)[:-1]
     path_to_gif_folder = smpl.filepath_list_to_string(path_to_sol) + os.path.sep
@@ -120,7 +120,7 @@ def make_gif(args, solution, node_locations, node_metadata):
 
     # assemble individual .png images into a gif
     if args['--verbose']:
-        print 'Starting process to combine .png files into .gif.  This will take a while.'
+        print('Starting process to combine .png files into .gif.  This will take a while.')
     try:
         gif_save_path = path_to_gif_folder+'animated_solution.gif'
         import imageio
@@ -128,11 +128,11 @@ def make_gif(args, solution, node_locations, node_metadata):
         for filename in list_of_still_paths:
             images.append(imageio.imread(filename))
             imageio.mimsave(gif_save_path, images)
-        print '- .gif saved @',gif_save_path
-        print '- HINT: To view the .gif file on Mac OSX, select it in finder then press space bar key'
+        print('- .gif saved @',gif_save_path)
+        print('- HINT: To view the .gif file on Mac OSX, select it in finder then press space bar key')
     except Exception as e:
-        print 'ERROR: Ran into an issue creating GIF.'
-        print '- Exact Python error:', e
+        print('ERROR: Ran into an issue creating GIF.')
+        print('- Exact Python error:', e)
 
     plt.close()
 
@@ -140,42 +140,42 @@ def save_solution(solution):
     """
     Saves script output.
     """
-    file_path_prefix = cmplx.get_filepath_to_solution_data(solution['map_id'], solution['sol_id'])
-    print 'Attempting to save solution @ '+file_path_prefix
+    file_path_prefix = cmplx.get_filepath_to_solution_data(solution['graph_id'], solution['sol_id'])
+    print('Attempting to save solution @', file_path_prefix)
     try:
         for key in solution.keys():
             if type(solution[key]) == type(np.zeros([10,10])):
                 solution[key] = solution[key].tolist()
         with open(file_path_prefix, 'w') as outfile:
             json.dump(solution,outfile)
-        print 'INFO: solution saved as json file'
+        print('INFO: solution saved as json file')
     except Exception as e:
-        print 'ERROR: unable to save solution as json'
-        print '- exact Python error:',str(e)
+        print('ERROR: unable to save solution as json')
+        print('- exact Python error:', e)
 
 
 def apply_solver(args):
 
-    node_locations, node_metadata = load_map(args['MAP_ID'])
+    node_locations, node_metadata = load_graph(args['graph_ID'])
 
     try:
         temp_resource = __import__('solvers.'+args['SOLVER'],
                                    globals(), locals(), ['solvers'], -1)
     except ImportError:
-        print 'Unable to import solver for algorithm named '+args['SOLVER']
+        print('Unable to import solver for algorithm named', args['SOLVER'])
         sys.exit(1)
 
     solution = temp_resource.solve(args, node_locations, node_metadata)
 
     solution['sol_id'] = cmplx.generate_ID('SID', 5)
-    solution['map_id'] = node_metadata['map_id']
+    solution['graph_id'] = node_metadata['graph_id']
 
     if args['--save']:
         save_solution(solution)
         if args['--gif']:
             make_gif(args, solution, node_locations, node_metadata)
     else:
-        print 'INFO: Not saving results.'
+        print('INFO: Not saving results.')
 
     return 0, solution
 

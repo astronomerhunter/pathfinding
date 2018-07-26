@@ -1,8 +1,13 @@
+wrapper.py
+
+
+
 # Side effects of LaTeX compilation
 *.aux
 *.out
 *.gz
 *.tex
+docs/*.log
 
 # Mac OSX Finder files
 *.DS_Store
@@ -14,7 +19,15 @@
 *~
 
 # Data
-data/maps/*
+data/graphs/*
+
+
+
+
+
+
+
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -105,8 +118,3 @@ ENV/
 
 # Rope project settings
 .ropeproject
-
-# LaTeX
-*.aux
-*.out
-*.gz

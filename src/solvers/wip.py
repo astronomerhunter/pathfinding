@@ -1,7 +1,7 @@
-# -------------------------------------------------------------------------------------- #
+
 # In development.
 # 
-# -------------------------------------------------------------------------------------- #
+
 import numpy as np
 import itertools
 import time
@@ -10,23 +10,23 @@ from functions import complex as cmplx
 import random
 
 
-# -------------------------------------------------------------------------------------- #
 
 
-# -------------------------------------------------------------------------------------- #
-def solve(configParams, cityMap, mapMeta):
+
+
+def solve(configParams, citygraph, graphMeta):
     start_time = time.strftime("%H:%M:%S")
     print ' INFO: Begining solve().'
     print '\t- start time:', start_time
     print '\t- method:', __file__
-    nCities = mapMeta['number_of_nodes']
+    nCities = graphMeta['number_of_nodes']
     print '\t- nCities:', nCities
 
     solution = {}
     
     # populate distance matrix
     print '\t- populating distance matrix'
-    distanceMatrix = cmplx.create_distance_matrix(cityMap, nCities)
+    distanceMatrix = cmplx.create_distance_matrix(citygraph, nCities)
     print '\t\t- done'
 
     # create progress bar for tracking

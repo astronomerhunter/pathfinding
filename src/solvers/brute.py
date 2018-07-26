@@ -1,8 +1,8 @@
-# -------------------------------------------------------------------------------------- #
+
 # This solver script finds all the possible paths.  There are (N-1)! many where N is the 
 # number of cities. It can take an extreamly long time when there are more than 10 cities.
 # This solver prints a progress bar in 10% increments.
-# -------------------------------------------------------------------------------------- #
+
 import numpy as np
 import itertools
 import time
@@ -66,15 +66,15 @@ def solve(args, node_locations, node_metadata):
     n_nodes = node_metadata['number_of_nodes']
 
     if args['--verbose']:
-        print ' INFO: Begining solve().'
-        print '\t- start time:', start_time
-        print '\t- method:', __file__
-        print '\t- n_nodes:', n_nodes
+        print(' INFO: Begining solve().')
+        print('\t- start time:', start_time)
+        print('\t- method:', __file__)
+        print('\t- n_nodes:', n_nodes)
 
     if args['--force'] is False and n_nodes > NUMBER_NODES_TO_WARN_USER:
-        print '\nWARNING: There are more than '+str(NUMBER_NODES_TO_WARN_USER)+' cities in this map, brute forcing may take a while.'
+        print('\nWARNING: There are more than '+str(NUMBER_NODES_TO_WARN_USER)+' cities in this graph, brute forcing may take a while.')
         if raw_input('\tWould you like to proceed? ["y" to continue]  ') != 'y':
-            print 'INFO: user input cancelled solve().'
+            print('INFO: user input cancelled solve().')
             sys.exit(1)
 
     solution = {}
@@ -83,19 +83,19 @@ def solve(args, node_locations, node_metadata):
     origin_node_index = 0
 
     if args['--verbose']:
-        print '- getting all possible paths'
+        print('- getting all possible paths')
 
     paths = get_all_possible_routes(n_nodes, origin_node_index)
 
     if args['--verbose']:
-        print '- aquired '+str(len(paths))+' of them'
-        print '- populating vertex weight matrix'
+        print('- aquired '+str(len(paths))+' of them')
+        print('- populating vertex weight matrix')
 
     vertex_weights = cmplx.create_vertex_weights_matrix(node_locations, n_nodes)
 
     if args['--verbose']:
-        print '- done'
-        print '- begining calculation of each path length'
+        print('- done')
+        print('- begining calculation of each path length')
 
     progress_bar = [0]*10
     weights = np.zeros(np.shape(paths)[0])
@@ -113,7 +113,7 @@ def solve(args, node_locations, node_metadata):
 
     end_time = time.strftime("%H:%M:%S")
     if args['--verbose']:
-        print '- end time:', end_time
+        print('- end time:', end_time)
 
     solution['start_time'] = start_time
     solution['end_time'] = end_time
@@ -127,11 +127,11 @@ def solve(args, node_locations, node_metadata):
     solution['SOLVER'] = 'brute'
 
     if args['--verbose']:
-        print '- index, path, weight:'
+        print('- index, path, weight:')
         for i in range(0, len(solution['weights'])):
             line_to_print = '\t'+str(i)+', '+str(solution['paths'][i,:])+', '+str(solution['weights'][i])
             if i in solution['shortest_path_index']:
                 line_to_print = line_to_print + ' *'
-            print line_to_print
+            print(line_to_print)
 
     return solution

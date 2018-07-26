@@ -1,30 +1,29 @@
-# -------------------------------------------------------------------------------------- #
+
 import numpy as np
 import os
 import matplotlib.pylab as plt
 import sys
+
 from functions import complex as cmplx
 from functions import simple as smpl
 
-# -------------------------------------------------------------------------------------- #
-def generate_static_PNG_of_map(node_locations, map_ID):
-    #
-    #
+
+def generate_static_PNG_of_graph(node_locations, graph_ID):
     x = node_locations[:,0]
     y = node_locations[:,1]
     nNodes = np.shape(node_locations)[0]
-    print ' INFO: number of nodes to plot:', nNodes
+    print(' INFO: number of nodes to plot:', nNodes)
     plt.scatter(x,y)
 
     xLowerLimit = min(x) - 0.10*(np.abs(max(x)-min(x)))
     xUpperLimit = max(x) + 0.10*(np.abs(max(x)-min(x)))
     yLowerLimit = min(y) - 0.10*(np.abs(max(y)-min(y)))
     yUpperLimit = max(y) + 0.10*(np.abs(max(y)-min(y)))
-    print ' INFO: lower and upper bounds indentified'
-    print '\t - xLowerLimit:',xLowerLimit
-    print '\t - xUpperLimit:',xUpperLimit
-    print '\t - yLowerLimit:',yLowerLimit
-    print '\t - yUpperLimit:',yUpperLimit
+    print(' INFO: lower and upper bounds indentified')
+    print('\t - xLowerLimit:', xLowerLimit)
+    print('\t - xUpperLimit:', xUpperLimit)
+    print('\t - yLowerLimit:', yLowerLimit)
+    print('\t - yUpperLimit:', yUpperLimit)
     plt.xlim([xLowerLimit,xUpperLimit])
     plt.ylim([yLowerLimit,yUpperLimit])
 
@@ -32,11 +31,11 @@ def generate_static_PNG_of_map(node_locations, map_ID):
     plt.ylabel('p_2 value')
     plt.title('p_1 and p_2 of all Nodes')
 
-    pathToMapFile, pathToMetaFile = cmplx.get_filepath_to_map_data(map_ID)
-    pathToMapFolder_list = pathToMapFile.split(os.path.sep)[:-1]
-    pathToMapFolder_list.append(map_ID+'_static.png')
+    pathTographFile, pathToMetaFile = cmplx.get_filepath_to_graph_data(graph_ID)
+    pathTographFolder_list = pathTographFile.split(os.path.sep)[:-1]
+    pathTographFolder_list.append(graph_ID+'_static.png')
     # TODO: use filepath_list_to_string() in simple.py instead of the following line
-    pathToStatic = str('/'+os.path.join(*pathToMapFolder_list))
+    pathToStatic = str('/'+os.path.join(*pathTographFolder_list))
     plt.savefig(pathToStatic)
     return pathToStatic
 
@@ -47,10 +46,10 @@ def make_PNGs_for_greedy(pathToSol, solution, node_locations):
     pathToMovie = smpl.filepath_list_to_string(pathToSol) + '/'
     if os.path.exists(pathToMovie) == False:
         os.mkdir(pathToMovie)
-        print ' INFO: created directory to hold all the movie still images'
+        print(' INFO: created directory to hold all the movie still images')
     else:
-        print ' INFO: no need to create movie directory, one already exists'
-        print '\t- path:',pathToMovie
+        print(' INFO: no need to create movie directory, one already exists')
+        print('\t- path:',pathToMovie)
 
     progressBar = [0]*10
     listOfStillPaths = []
@@ -93,92 +92,85 @@ def make_GIF_from_PNGs(pathToMovie, listOfStillPaths):
         for filename in listOfStillPaths:
             images.append(imageio.imread(filename))
             imageio.mimsave(gifSavePath, images)
-        print '\t- GIF made!'
-        print '\t- saved @',gifSavePath
-        print '\t- HINT: To view the .gif file on Mac OSX, select it in finder then press space bar key'
+        print('\t- GIF made!')
+        print('\t- saved @',gifSavePath)
+        print('\t- HINT: To view the .gif file on Mac OSX, select it in finder then press space bar key')
 
     except Exception as e:
-        print '\n ERROR: Ran into an issue creating GIF.'
-        print '\t- Exact Python error:', e
-        print '\n'
+        print('\n ERROR: Ran into an issue creating GIF.')
+        print('\t- Exact Python error:', e)
+        print()
 
-# -------------------------------------------------------------------------------------- #
+
 def main(parameters):
-    print ' INFO: Parameters:'
+    print(' INFO: Parameters:')
     for key in parameters.keys():
-        print '\t- '+key+' : '+parameters[key]
+        print('\t- '+key+' : '+parameters[key])
 
-    pathToMap, pathToMeta = cmplx.get_filepath_to_map_data(parameters['map_ID'])
+    pathTograph, pathToMeta = cmplx.get_filepath_to_graph_data(parameters['graph_ID'])
     try:
-       	node_locations = np.loadtxt(pathToMap)
-        print ' INFO: found a cityMap @',pathToMap
+       	node_locations = np.loadtxt(pathTograph)
+        print(' INFO: found a citygraph @',pathTograph)
     except Exception as e:
-        print '\n ERROR loading City Locations file'
-        print '\t- looked @', pathToMap
-        print '\t- exact Python error:', e
-        print '\n'
+        print('\n ERROR loading City Locations file')
+        print('\t- looked @', pathTograph)
+        print('\t- exact Python error:', e)
         sys.exit(1)
 
-    pathToStatic = generate_static_PNG_of_map(node_locations, parameters['map_ID'])
-    print ' INFO: saved a static image of the map @',pathToStatic
+    pathToStatic = generate_static_PNG_of_graph(node_locations, parameters['graph_ID'])
+    print(' INFO: saved a static image of the graph @',pathToStatic)
     
     if 'sol_ID' not in parameters.keys():
-        print 'INFO: Script ending\n'
+        print('INFO: Script ending\n')
         sys.exit(0)
     else:
-        pathToSol = cmplx.get_filepath_to_solution_data(parameters['map_ID'], parameters['sol_ID'])
+        pathToSol = cmplx.get_filepath_to_solution_data(parameters['graph_ID'], parameters['sol_ID'])
         try:
             import json
             with open(pathToSol,'r') as f:
                 solution = json.load(f)
-            print ' INFO: solution JSON found @',pathToSol
+            print(' INFO: solution JSON found @',pathToSol)
         except Exception as e:
-            print '\n ERROR loading solutions file'
-            print '\t- looked @',pathToSol
-            print '\t- exact Python error:',e
-            print
+            print('\n ERROR loading solutions file')
+            print('\t- looked @',pathToSol)
+            print('\t- exact Python error:',e)
             sys.exit(1)
         
         if solution['alg'] in ['greedy', 'random_neighbor', 'nearest_neighbor']
-            print ' INFO: solution["alg"] detected as "'+solution['alg']+'", commencing movie creation'
+            print(' INFO: solution["alg"] detected as "'+solution['alg']+'", commencing movie creation')
             pathToMovie, listOfStillPaths = make_PNGs_for_greedy(pathToSol, solution, node_locations)
-            print ' INFO: Creating animated GIF'
+            print(' INFO: Creating animated GIF')
             make_GIF_from_PNGs(pathToMovie, listOfStillPaths)
         else:
-             print ' INFO: visualize.py not built to handle',solution['alg']
+             print(' INFO: visualize.py not built to handle',solution['alg'])
         
-        print 'INFO: Script done.'
-        print '\n'
+        print('INFO: Script done.')
         
-# -------------------------------------------------------------------------------------- #
+
 if __name__ == '__main__':
     helpOptions = ['-h','--h','-help','--help']
     if any((True for x in helpOptions if x in sys.argv)):
         # TODO: lets rewrite this guy
-        print
-        print 'INFO:'
-        print '\tthis needs to be written!'
-        print
+        print('INFO:')
+        print('\tthis needs to be written!')
         sys.exit(0)
     else:
-        print '\n INFO: Begining script.'
+        print('\n INFO: Begining script.')
         # get the parameters by which to create a visualization with
         if len(sys.argv) == 1:
             # command looks like "python visualize.py"
-            print ' ERROR: This script needs inputs passed as JSON encased in single quotes'
-            print '''      $ python visualize.py '{"map_ID":"MID12345"}' '''
-            print '\n'
+            print(' ERROR: This script needs inputs passed as JSON encased in single quotes')
+            print('''      $ python visualize.py '{"graph_ID":"MID12345"}' ''')
             sys.exit(1)
         else:
             # try to intrepret command line argument as a JSON
-            print ' INFO: Attempting to get parameters from command line input'
+            print(' INFO: Attempting to get parameters from command line input')
             try:
                 import json
                 parameters = json.loads(sys.argv[1])
             except Exception as e:
-                print ' ERROR: Unable to intrepret command line argument as JSON. Try...'
-                print '''     $ python visualize.py '{"map_ID":"MID12345"}' '''
-                print ' Exact Python error:', e
-                print '\n'
+                print(' ERROR: Unable to intrepret command line argument as JSON. Try...')
+                print('''     $ python visualize.py '{"graph_ID":"MID12345"}' ''')
+                print(' Exact Python error:', e)
                 sys.exit(1)
     main(parameters)
